@@ -2,22 +2,17 @@
  * @Author: error: git config user.name && git config user.email & please set dead value or install git
  * @Date: 2022-06-09 13:50:55
  * @LastEditors: error: git config user.name && git config user.email & please set dead value or install git
- * @LastEditTime: 2022-07-22 10:27:03
+ * @LastEditTime: 2022-07-25 16:05:37
  * @FilePath: \basic\src\layout\index.vue
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
 -->
 <template>
-    <a-layout style="min-height: 100vh">
+    <a-layout has-sider>
         <!-- 左侧 menu -->
-        <sidebar :collapsed="collapsed" :selectedKeys="selectedKeys"></sidebar>
-        <a-layout>
-            <a-layout-header style="background: #fff; padding: 0">
-                <menu-unfold-outlined
-                    v-if="collapsed"
-                    class="trigger"
-                    @click="() => (collapsed = !collapsed)"
-                    />
-                <menu-fold-outlined v-else class="trigger" @click="() => (collapsed = !collapsed)" />
+        <sidebar :selectedKeys="selectedKeys"></sidebar>
+        <a-layout :style="{ marginLeft: '200px' }">
+            <a-layout-header style="background: #fff; padding: 0;">
+                <cloud-avatar></cloud-avatar>       
             </a-layout-header>
 
             <a-layout-content
@@ -35,10 +30,10 @@
 </template>
 
 <script setup>
-import { MenuUnfoldOutlined, MenuFoldOutlined } from '@ant-design/icons-vue';
+
 import Sidebar from './components/Sidebar/index.vue'
+import CloudAvatar from './components/Avatar/index.vue';
 import { ref } from 'vue'
-const collapsed = ref(false)
 const selectedKeys = ref(['1'])
 </script>
 
