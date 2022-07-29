@@ -2,7 +2,7 @@
  * @Author: error: git config user.name && git config user.email & please set dead value or install git
  * @Date: 2022-06-16 18:18:56
  * @LastEditors: error: git config user.name && git config user.email & please set dead value or install git
- * @LastEditTime: 2022-06-24 17:36:27
+ * @LastEditTime: 2022-07-27 11:05:39
  * @FilePath: \basic\src\permission.js
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
  */
@@ -25,7 +25,20 @@ router.beforeEach(async (to, from, next) => {
       // 判断用户资料是否获取
       // 若不存在用户信息，则需要获取用户信息
       if (!store.getters.hasUserInfo) {
-        // 触发获取用户信息的 action，并获取用户当前权限
+        // 触发获取用户信息的 
+        const { permission } = await store.dispatch('user/getUserInfo')
+        // 处理用户权限，筛选出需要添加的权限
+        const filterRoutes = await store.dispatch(
+          'permission/filterRoutes',
+          permission.menus
+        )
+        console.log(filterRoutes)
+        // 利用 addRoute 循环添加
+        filterRoutes.forEach(item => {
+          router.addRoute(item)
+        })
+        // 添加完动态路由之后，需要在进行一次主动跳转
+        return next(to.path)
       }
       next()
     }

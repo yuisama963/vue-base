@@ -2,7 +2,7 @@
  * @Author: error: git config user.name && git config user.email & please set dead value or install git
  * @Date: 2022-06-09 13:50:55
  * @LastEditors: error: git config user.name && git config user.email & please set dead value or install git
- * @LastEditTime: 2022-07-25 16:05:37
+ * @LastEditTime: 2022-07-26 16:55:23
  * @FilePath: \basic\src\layout\index.vue
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
 -->
@@ -18,7 +18,7 @@
             <a-layout-content
                 :style="{ margin: '24px 16px', padding: '24px', background: '#fff', minHeight: '280px' }"
             >
-                Content
+               <app-main />
             </a-layout-content>
 
             <a-layout-footer style="text-align: center">
@@ -33,6 +33,7 @@
 
 import Sidebar from './components/Sidebar/index.vue'
 import CloudAvatar from './components/Avatar/index.vue';
+import AppMain from './components/AppMain.vue'
 import { ref } from 'vue'
 const selectedKeys = ref(['1'])
 </script>
