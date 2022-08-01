@@ -2,14 +2,15 @@
  * @Author: error: git config user.name && git config user.email & please set dead value or install git
  * @Date: 2022-07-27 16:00:51
  * @LastEditors: error: git config user.name && git config user.email & please set dead value or install git
- * @LastEditTime: 2022-07-28 15:46:27
+ * @LastEditTime: 2022-08-01 18:56:25
  * @FilePath: \basic\src\mock\index.js
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
  */
 //mock.js 文件
+import Mock from 'mockjs' // 引入mockjs
 const Random = Mock.Random
 
-Mock.mock('/api/login', 'post', (params) => {
+Mock.mock('/api/sys/login', 'post', (params) => {
   return {
     "success": true,
     "code": 10000,

@@ -2,16 +2,20 @@
  * @Author: error: git config user.name && git config user.email & please set dead value or install git
  * @Date: 2022-06-10 15:20:35
  * @LastEditors: error: git config user.name && git config user.email & please set dead value or install git
- * @LastEditTime: 2022-06-10 17:25:10
+ * @LastEditTime: 2022-08-01 19:02:17
  * @FilePath: \basic\src\views\login\index.vue
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
 -->
 <script setup>
-import { ref } from 'vue'
+import { ref, computed } from 'vue'
 import { validatePassword } from './rules'
+import { useStore } from 'vuex'
+import { useRouter } from 'vue-router'
 
+const store = useStore()
+const router = useRouter()
 // 数据源
-const loginForm = ref({
+let loginForm = ref({
   username: 'super-admin',
   password: '123456',
   remember: true
@@ -42,11 +46,26 @@ const loginRules = ref({
 // 提交表单且数据验证成功后回调事件
 const onFinish = values => {
   console.log('Success:', values)
+  store
+      .dispatch('user/login', loginForm.value)
+      .then(() => {
+        //loading.value = false
+        // 登录后操作
+        console.log(123)
+        router.push('/')
+      })
+      .catch(err => {
+        console.log(err)
+      })
 }
 
 const onFinishFailed = errorInfo => {
   console.log('Failed:', errorInfo)
 }
+
+const disabled = computed(() => {
+  return !(loginForm.value.username && loginForm.value.password);
+});
 
 </script>
 <template>
@@ -82,7 +101,7 @@ const onFinishFailed = errorInfo => {
       </a-form-item>
 
       <a-form-item :wrapper-col="{ offset: 8, span: 16 }">
-        <a-button type="primary" html-type="submit">登录</a-button>
+        <a-button :disabled="disabled" type="primary" html-type="submit">登录</a-button>
       </a-form-item>
     </a-form>
   </div>
