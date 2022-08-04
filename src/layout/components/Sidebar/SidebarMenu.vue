@@ -2,7 +2,7 @@
  * @Author: error: git config user.name && git config user.email & please set dead value or install git
  * @Date: 2022-06-09 14:44:18
  * @LastEditors: error: git config user.name && git config user.email & please set dead value or install git
- * @LastEditTime: 2022-07-26 16:51:59
+ * @LastEditTime: 2022-08-03 16:24:09
  * @FilePath: \basic\src\layout\components\Sidebar\SidebarMenu.vue
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
 -->
@@ -19,9 +19,13 @@
           <span>业务中心</span>
         </span>
       </template>
-      <a-menu-item key="3">Tom</a-menu-item>
-      <a-menu-item key="4">Bill</a-menu-item>
-      <a-menu-item key="5">Alex</a-menu-item>
+      <a-menu-item key="3">订单管理</a-menu-item>
+      <a-menu-item key="4">货源管理</a-menu-item>
+      <a-menu-item key="5">运单跟踪</a-menu-item>
+      <a-menu-item key="5">运单管理</a-menu-item>
+      <a-menu-item key="5">运单草稿</a-menu-item>
+      <a-menu-item key="5">回单跟踪</a-menu-item>
+      <a-menu-item key="5">回单管理</a-menu-item>
     </a-sub-menu>
     <a-sub-menu key="sub4">
       <template #title>
