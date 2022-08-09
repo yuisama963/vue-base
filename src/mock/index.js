@@ -2,7 +2,7 @@
  * @Author: error: git config user.name && git config user.email & please set dead value or install git
  * @Date: 2022-07-27 16:00:51
  * @LastEditors: error: git config user.name && git config user.email & please set dead value or install git
- * @LastEditTime: 2022-08-03 15:20:44
+ * @LastEditTime: 2022-08-09 10:48:17
  * @FilePath: \basic\src\mock\index.js
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
  */
@@ -39,11 +39,18 @@ Mock.mock('/api/sys/profile', 'get', (params) => {
         "avatar":"https://m.imooc.com/static/wap/static/common/img/logo-small@2x.png",
         "permission":{
             "menus":[
-                "userManage",
-                "roleList",
-                "permissionList",
-                "articleRanking",
-                "articleCreate"
+                { id: "workplace", name: '工作台'},
+                // { id: "businessCtr", name: '业务中心'},
+                // { id: "operationCtr", name: '运营中心'},
+                // { id: "settlementCtr", name: '结算中心'},
+                { id: "userCtr", name: '用户中心', children: [
+                  {id: 'shipperMgmt', name: "托运方管理"},
+                  {id: 'carrierMgmt', name: "承运方管理"}]},
+                // { id: "validityMgmt", name: '合规性管理'},
+                { id: "sysMgmt", name: '系统管理', children: [
+                  {id: 'organization', name: "组织架构"},
+                  {id: 'roleMgmt', name: "角色管理"}
+                ]},
             ],
             "points":[
                 "distributeRole",
