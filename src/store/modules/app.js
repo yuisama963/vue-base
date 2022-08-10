@@ -2,7 +2,7 @@
  * @Author: error: git config user.name && git config user.email & please set dead value or install git
  * @Date: 2022-08-08 18:43:03
  * @LastEditors: error: git config user.name && git config user.email & please set dead value or install git
- * @LastEditTime: 2022-08-09 10:25:02
+ * @LastEditTime: 2022-08-10 18:49:58
  * @FilePath: \basic\src\store\modules\app.js
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
  */
@@ -41,6 +41,8 @@ export default {
      removeTagsView(state, payload) {
       if (payload.type === 'index') {
         state.tagsViewList.splice(payload.index, 1)
+        setItem(TAGS_VIEW, state.tagsViewList)
+        console.log(state.tagsViewList)
         return
       } else if (payload.type === 'other') {
         state.tagsViewList.splice(

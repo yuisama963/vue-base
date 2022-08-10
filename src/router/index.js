@@ -2,7 +2,7 @@
  * @Author: error: git config user.name && git config user.email & please set dead value or install git
  * @Date: 2022-06-09 18:08:47
  * @LastEditors: error: git config user.name && git config user.email & please set dead value or install git
- * @LastEditTime: 2022-08-09 11:47:05
+ * @LastEditTime: 2022-08-10 15:00:59
  * @FilePath: \basic\src\router\index.js
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
  */
@@ -103,6 +103,7 @@ export const privateRoutes = [
     path: 'shipper-mgmt',
     component: () => 
       import('@/views/user-ctr/shipper-mgmt/index.vue'),
+    name: 'shipperMgmt',
     meta: {
       title: '托运方管理',
       icon: 'personnel-manage',
@@ -113,6 +114,7 @@ export const privateRoutes = [
     path: 'carrier-mgmt',
     component: () => 
       import('@/views/user-ctr/carrier-mgmt/index.vue'),
+    name: 'carrierMgmt',
     meta: {
       title: '承运方管理',
       icon: 'personnel-manage',
@@ -132,6 +134,7 @@ export const privateRoutes = [
     path: 'organization',
     component: () => 
       import('@/views/sys-mgmt/organization/index.vue'),
+    name: 'organization',
     meta: {
       title: '组织架构',
       icon: 'personnel-manage',
@@ -142,6 +145,7 @@ export const privateRoutes = [
     path: 'role-mgmt',
     component: () => 
       import('@/views/sys-mgmt/role-mgmt/index.vue'),
+    name: 'roleMgmt',
     meta: {
       title: '角色管理',
       icon: 'personnel-manage',
@@ -162,6 +166,7 @@ export const publicRoutes = [
   },
   {
     path: '/login',
+    name: 'login',
     component: () =>
       import('../views/login/index.vue')
   },{
