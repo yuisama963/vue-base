@@ -2,13 +2,13 @@
  * @Author: error: git config user.name && git config user.email & please set dead value or install git
  * @Date: 2022-06-10 11:32:17
  * @LastEditors: error: git config user.name && git config user.email & please set dead value or install git
- * @LastEditTime: 2022-08-10 19:11:39
+ * @LastEditTime: 2022-08-12 15:36:14
  * @FilePath: \basic\src\components\TagsView\index.vue
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
 -->
 <template>
     <div class="tags-view-container">
-        <a-tabs v-model:activeKey="activeKey" type="card">
+        <a-tabs v-model:activeKey="activeKey" type="card" class="tags-view-wrapper">
             <a-tab-pane v-for="(tag, index) in tagsViewList"
                 :key="tag.fullPath"
             >
@@ -24,22 +24,47 @@
                 </span>
             </template>
             </a-tab-pane>
-            <template #rightExtra>
-                <a-button>Right Extra Action</a-button>
-            </template>
         </a-tabs>
+        <div class="right-extra">
+            <a-dropdown class="context-menu">
+                <a class="ant-dropdown-link" @click.prevent>
+                    <ellipsis-outlined :rotate="180"/>
+                </a>
+                <template #overlay>
+                    <a-menu>
+                        <a-menu-item>
+                            <a href="javascript:;">关闭其他</a>
+                        </a-menu-item>
+                    </a-menu>
+                </template>
+            </a-dropdown>
+            <cloud-avatar></cloud-avatar>
+        </div>
     </div>
 </template>
 
 <script setup>
-import { ReloadOutlined, CloseOutlined } from '@ant-design/icons-vue';
+import { ReloadOutlined, CloseOutlined, EllipsisOutlined } from '@ant-design/icons-vue';
 import { useRoute, useRouter } from 'vue-router'
 import { useStore } from 'vuex'
-import { ref } from 'vue'
+import { ref, watch } from 'vue'
+import CloudAvatar from '@/layout/components/Avatar/index.vue';
 
 const route = useRoute()
 
 const activeKey = ref(route.fullPath)
+const getActiveKey = () => {
+  activeKey.value = route.fullPath
+}
+watch(
+  route,
+  () => {
+    getActiveKey()
+  },
+  {
+    immediate: true
+  }
+)
 
 /**
  * 是否被选中
@@ -61,9 +86,8 @@ const onCloseClick = index => {
     })
     if (isActive) {
         router.push(tagsViewList[index-1].path)
-        activeKey.value = tagsViewList[index-1].path
-    } else {
-        console.log(tagsViewList)
+        //getActiveKey()
+        //activeKey.value = tagsViewList[index-1].path
     }
     
 }
@@ -73,8 +97,23 @@ const onCloseClick = index => {
 
 <style lang="scss" scoped>
 .tags-view-container {
-    flex: 1;
-    padding: 12px 0 12px 24px;
     display: flex;
+    .tags-view-wrapper {
+        flex: 1;
+        padding: 12px 0px 12px 24px; 
+    }
+    .right-extra {
+        box-shadow: 0px 2px 8px rgba(0, 0, 0, 0.15);
+        width: 100px;
+        height: 64px;
+        display: flex;
+    }
+    .context-menu {
+        width: 46px;
+        height: 64px;
+    }
+}
+:v-deep(.ant-tabs-nav-operations) {
+    display: none;
 }
 </style>
