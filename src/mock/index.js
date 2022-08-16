@@ -2,7 +2,7 @@
  * @Author: error: git config user.name && git config user.email & please set dead value or install git
  * @Date: 2022-07-27 16:00:51
  * @LastEditors: error: git config user.name && git config user.email & please set dead value or install git
- * @LastEditTime: 2022-08-12 18:01:19
+ * @LastEditTime: 2022-08-16 14:00:17
  * @FilePath: \basic\src\mock\index.js
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
  */
@@ -69,10 +69,12 @@ Mock.mock('/api/sys/getOrganization', 'get', (params) => {
     "success": true,
     "code": 200,
     "data": {
-      "id": "Modeling Methods",
+      "id": "hyy",
+      "name": "货有友平台",
       "children": [
         {
-          "id": "Classification",
+          "id": "operationDept",
+          "name": "运营部",
           "children": [
             {
               "id": "Logistic regression"
@@ -101,7 +103,8 @@ Mock.mock('/api/sys/getOrganization', 'get', (params) => {
           ]
         },
         {
-          "id": "Consensus",
+          "id": "techDept",
+          "name": "技术部",
           "children": [
             {
               "id": "Models diversity",
@@ -154,7 +157,8 @@ Mock.mock('/api/sys/getOrganization', 'get', (params) => {
           ]
         },
         {
-          "id": "Regression",
+          "id": "financeDept",
+          "name": "财务部",
           "children": [
             {
               "id": "Multiple linear regression"
