@@ -2,7 +2,7 @@
  * @Author: error: git config user.name && git config user.email & please set dead value or install git
  * @Date: 2022-08-03 18:11:25
  * @LastEditors: error: git config user.name && git config user.email & please set dead value or install git
- * @LastEditTime: 2022-08-16 18:25:16
+ * @LastEditTime: 2022-08-17 19:11:56
  * @FilePath: \basic\src\views\sys-mgmt\organization\index.vue
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
 -->
@@ -15,9 +15,16 @@
       style="width: 200px"
       @search="onSearch"
     />
+    <a-row>
+      <legend-item
+        v-for="(item, index) in Tree_Graph_Subject_Colors"
+        :color="item"
+        v-show="index <= maxDepth"
+        @onCollapse="fastCollapseExpand"
+        :ind="index"></legend-item>
+    </a-row>
   </a-row>
   <div id="mountNode"></div>
-  <div id="container"></div>
   <a-modal
       v-model:visible="visible"
       title="Basic Modal"
@@ -37,9 +44,13 @@
 import G6 from '@antv/g6'
 import { getOrganizationData } from '@/api/sys'
 import { ref, watch, onMounted } from 'vue'
+import { arrayFlagLevel } from '@/utils/tree'
+import { Tree_Graph_Subject_Colors } from '@/constant'
+import legendItem from './components/legendItem.vue';
 
+let maxDepth = ref(0)
 //节点管理弹窗
-const visible = ref(true)
+const visible = ref(false)
 // g6工具库
 const Util = G6.Util
 // Background Animation
@@ -47,6 +58,7 @@ G6.registerNode(
   'background-animate',
   {
     afterDraw(cfg, group) {
+      console.log(cfg)
       let r = cfg.size / 2;
       if (isNaN(r)) {
         r = cfg.size[0] / 2;
@@ -58,7 +70,7 @@ G6.registerNode(
           x: 0,
           y: 0,
           r,
-          fill: cfg.color,
+          fill: cfg.style.stroke,
           opacity: 0.6,
         },
         // must be assigned in G6 3.3 and later versions. it can be any value you want
@@ -71,7 +83,7 @@ G6.registerNode(
           x: 0,
           y: 0,
           r,
-          fill: 'blue', // 为了显示清晰，随意设置了颜色
+          fill: cfg.style.stroke, // 为了显示清晰，随意设置了颜色
           opacity: 0.6,
         },
         // must be assigned in G6 3.3 and later versions. it can be any value you want
@@ -84,7 +96,7 @@ G6.registerNode(
           x: 0,
           y: 0,
           r,
-          fill: 'green',
+          fill: cfg.style.stroke,
           opacity: 0.6,
         },
         // must be assigned in G6 3.3 and later versions. it can be any value you want
@@ -141,12 +153,11 @@ G6.registerNode(
 let data = ref({})
 let treeGraph = null
 // 搜索框数据
-const searchRes = ref('')
+let searchRes = ref('')
 
 onMounted(async () => {
   await getOrganization()
   g6(data.value)
-  //main()
 })
 
 
@@ -166,77 +177,17 @@ const onSearch = () => {
 }
 
 
-
-const main = async () => {
-  const response = await fetch(
-    'https://gw.alipayobjects.com/os/basement_prod/6cae02ab-4c29-44b2-b1fd-4005688febcb.json',
-  );
-  console.log(response)
-  const remoteData = await response.json();
-  console.log(remoteData)
-  const testGraph = new G6.Graph({
-  container: 'container',
-  width: 1000,
-  height: 600,
-  fitView: true,
-  fitViewPadding: [20, 40, 50, 20],
-})
-  testGraph.data(remoteData);
-  testGraph.render();
-};
-
-
 const defineColor = () => {
-  const subjectColors = ['#5B8FF9', '#F6BD16', '#5AD8A6', '#945FB9', '#E86452', '#6DC8EC', '#FF99C3', '#1E9493', '#FF9845', '#5D7092'];
+  // const subjectColors = ['#5B8FF9', '#F6BD16', '#5AD8A6', '#945FB9', '#E86452', '#6DC8EC', '#FF99C3', '#1E9493', '#FF9845', '#5D7092'];
   const backColor = '#fff';
   const theme = 'default';
   const disableColor = '#777';
   const colorSets = G6.Util.getColorSetsBySubjectColors(
-    subjectColors,
+    Tree_Graph_Subject_Colors,
     backColor,
     theme,
     disableColor,
   );
-  const data = { nodes: [] };
-
-  subjectColors.forEach((color, i) => {
-    data.nodes.push({
-      id: `node-${color}`,
-      label: color,
-      labelCfg: {
-        position: 'bottom',
-      },
-      style: {
-        fill: colorSets[i].mainFill,
-        stroke: colorSets[i].mainStroke,
-      },
-      stateStyles: {
-        active: {
-          fill: colorSets[i].activeFill,
-          stroke: colorSets[i].activeStroke,
-          shadowColor: colorSets[i].activeStroke,
-        },
-        inactive: {
-          fill: colorSets[i].inactiveFill,
-          stroke: colorSets[i].inactiveStroke,
-        },
-        selected: {
-          fill: colorSets[i].selectedFill,
-          stroke: colorSets[i].selectedStroke,
-          shadowColor: colorSets[i].selectedStroke,
-        },
-        highlight: {
-          fill: colorSets[i].highlightFill,
-          stroke: colorSets[i].highlightStroke,
-        },
-        disable: {
-          fill: colorSets[i].disableFill,
-          stroke: colorSets[i].disableStroke,
-        },
-      },
-    });
-  });
-
   return colorSets
 }
 
@@ -259,9 +210,9 @@ const g6 = (data) => {
       }
       return `
       <a-menu>
-        <a-menu-item key="1">1st menu item</a-menu-item>
-        <a-menu-item key="2">2nd menu item</a-menu-item>
-        <a-menu-item key="3">3rd menu item</a-menu-item>
+        <a-menu-item key="1" @click="onDelNode">删除此节点</a-menu-item>
+        <a-menu-item key="2" @click="onAddNode">新增子节点</a-menu-item>
+        <a-menu-item key="3" @click="onCollapseNode">折叠</a-menu-item>
       </a-menu>`;
     },
     handleMenuClick: (target, item) => {
@@ -287,14 +238,15 @@ const g6 = (data) => {
     height, // 图的高度
     modes: {
       default: [
-        {
-          type: 'collapse-expand',
-          onChange: function onChange(item, collapsed) {
-            const data = item.getModel();
-            data.collapsed = collapsed;
-            return true;
-          },
-        },
+        // {
+        //   type: 'collapse-expand',
+        //   onChange: function onChange(item, collapsed) {
+        //     console.log('item', item)
+        //     const data = item.getModel();
+        //     data.collapsed = collapsed;
+        //     return true;
+        //   },
+        // },
         'drag-canvas',
         'zoom-canvas',
       ],
@@ -331,13 +283,45 @@ const g6 = (data) => {
     plugins: [minimap, contextMenu]
   });
   treeGraph.node(function (node) {
-    //console.log(node)
+   
+    const { depth } = node
+    maxDepth.value = maxDepth.value > depth ? maxDepth.value : depth
+    const color = colorSets[depth]
     return {
+      collapsed: false,
       label: node.name || node.id,
       labelCfg: {
         offset: 10,
         position: node.children && node.children.length > 0 ? 'left' : 'right',
       },
+      style: {
+        fill: color.mainFill,
+        stroke: color.mainStroke,
+      },
+      stateStyles: {
+        active: {
+          fill: color.activeFill,
+          stroke: color.activeStroke,
+          shadowColor: color.activeStroke,
+        },
+        inactive: {
+          fill: color.inactiveFill,
+          stroke: color.inactiveStroke,
+        },
+        selected: {
+          fill: color.selectedFill,
+          stroke: color.selectedStroke,
+          shadowColor: color.selectedStroke,
+        },
+        highlight: {
+          fill: color.highlightFill,
+          stroke: color.highlightStroke,
+        },
+        disable: {
+          fill: color.disableFill,
+          stroke: color.disableStroke,
+        },
+      }
     };
   });
   // 数据加载和图的渲染
@@ -349,7 +333,6 @@ const g6 = (data) => {
     const node = ev.item; // 被点击的节点元素
     const shape = ev.target; // 被点击的图形，可根据该信息作出不同响应，以达到局部响应效果
     // ... do sth
-    console.log(123)
     visible.value = true
   });
 }
@@ -357,8 +340,20 @@ const g6 = (data) => {
 
 const getOrganization = async () => {
   data.value = await getOrganizationData()
-  console.log(data.value)
   //g6(data.value)
+}
+
+const fastCollapseExpand = ( data ) => {
+  const findNodes = treeGraph.findAll('node', (node) => {
+    return node.get('model').depth == data.ind
+  })
+  console.log(findNodes)
+  findNodes.forEach((node) => {
+    console.log(node)
+    treeGraph.updateItem(node, {collapsed: true})
+    treeGraph.setItemState(node, 'collapsed', true)
+    treeGraph.layout()
+  })
 }
 </script>
 
