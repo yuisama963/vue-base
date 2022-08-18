@@ -2,7 +2,7 @@
  * @Author: error: git config user.name && git config user.email & please set dead value or install git
  * @Date: 2022-08-03 18:11:25
  * @LastEditors: error: git config user.name && git config user.email & please set dead value or install git
- * @LastEditTime: 2022-08-17 19:11:56
+ * @LastEditTime: 2022-08-18 20:31:04
  * @FilePath: \basic\src\views\sys-mgmt\organization\index.vue
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
 -->
@@ -19,9 +19,9 @@
       <legend-item
         v-for="(item, index) in Tree_Graph_Subject_Colors"
         :color="item"
-        v-show="index <= maxDepth"
+        v-show="index > 0 && index <= maxDepth"
         @onCollapse="fastCollapseExpand"
-        :ind="index"></legend-item>
+        :depth="index"></legend-item>
     </a-row>
   </a-row>
   <div id="mountNode"></div>
@@ -50,15 +50,16 @@ import legendItem from './components/legendItem.vue';
 
 let maxDepth = ref(0)
 //节点管理弹窗
-const visible = ref(false)
+const nodeMgmtDialogVisible = ref(false)
+const addNodeDialogVisible = ref(false)
 // g6工具库
 const Util = G6.Util
-// Background Animation
+
+// Background Animation 节点动画
 G6.registerNode(
   'background-animate',
   {
     afterDraw(cfg, group) {
-      console.log(cfg)
       let r = cfg.size / 2;
       if (isNaN(r)) {
         r = cfg.size[0] / 2;
@@ -150,30 +151,57 @@ G6.registerNode(
   'circle',
 );
 
-let data = ref({})
+let treeData = ref({})
+
 let treeGraph = null
 // 搜索框数据
 let searchRes = ref('')
 
 onMounted(async () => {
   await getOrganization()
-  g6(data.value)
+  G6.Util.traverseTree(treeData.value, (node) => {
+    node.collapsed = false
+    return true
+  })
+  g6(treeData.value)
 })
 
 
 const onSearch = () => {
-  searchRes.value = 'techDept'
+  //searchRes.value = '技术'
   //搜索到该节点
   //1.聚焦该节点，同时缩放画布到初始大小
-  treeGraph.fitView();
-  treeGraph.focusItem(searchRes.value, true, {
-    easing: 'easeCubic',
-    duration: 500,
-  });
-  const node = treeGraph.findById(searchRes.value);
-  treeGraph.setItemState(node, 'focus', true);
-  treeGraph.updateItem(node, {type: 'background-animate'})
-  
+  //treeGraph.fitView();
+  // treeGraph.focusItem(searchRes.value, true, {
+  //   easing: 'easeCubic',
+  //   duration: 500,
+  // });
+  // treeGraph.findAll('node', (node) => {
+  //   console.log(node)
+  //   //return node.getModel().name.includes()
+  // })
+  treeGraph.getNodes().forEach((node) => {
+    console.log("all", node)
+    if (node.getModel().name.includes(searchRes.value)) {
+      console.log("include", node)
+      //treeGraph.setItemState(node, 'focus', true);
+      //如果搜索到的节点的父节点折叠，自动打开
+      const parentNode = node.get('parent')
+      if (parentNode.getModel().collapsed) {
+        treeGraph.updateItem(parentNode, {collapsed: false})
+        treeGraph.setItemState(parentNode, 'collapsed', false)
+      }
+      
+      treeGraph.updateItem(node, {type: 'background-animate'})
+      console.log("parent", parentNode)
+    } else {
+      treeGraph.updateItem(node, {type: 'circle'})
+    }
+  })
+  treeGraph.layout()
+  // const node = treeGraph.findById(searchRes.value);
+  // treeGraph.setItemState(node, 'focus', true);
+  // treeGraph.updateItem(node, {type: 'background-animate'})
 }
 
 
@@ -182,41 +210,58 @@ const defineColor = () => {
   const backColor = '#fff';
   const theme = 'default';
   const disableColor = '#777';
-  const colorSets = G6.Util.getColorSetsBySubjectColors(
+  const colorSets = Util.getColorSetsBySubjectColors(
     Tree_Graph_Subject_Colors,
     backColor,
     theme,
     disableColor,
   );
+  console.log(colorSets)
   return colorSets
 }
 
 
 const g6 = (data) => {
   const colorSets = defineColor()
-  console.log(data)
+  //console.log(data)
   const container = document.getElementById('mountNode');
   const width = container.clientWidth;
   const height = document.body.clientHeight - 260;
   //右键菜单
   const contextMenu = new G6.Menu({
+    itemTypes: ['node'],
     getContent(evt) {
-      let header;
-      if (evt.target && evt.target.isCanvas && evt.target.isCanvas()) {
-        header = 'Canvas ContextMenu';
-      } else if (evt.item) {
-        const itemType = evt.item.getType();
-        header = `${itemType.toUpperCase()} ContextMenu`;
+      let header = ''
+      let footer = ''
+      if (evt.item) {
+        // 根节点不能删除 不能折叠
+        // 没有子树的节点不能折叠
+        console.log(evt.item)
+        const data = evt.item.getModel()
+        console.log(data)
+        header = data.depth > 0 ? `<li class="ant-dropdown-menu-item ant-dropdown-menu-item-only-child del-node">删除此节点</li>` : ''
+        footer = data.depth > 0 && data.children && data.children.length > 0 ? `<li class="collapse-node">折叠</li>` : ''
       }
       return `
-      <a-menu>
-        <a-menu-item key="1" @click="onDelNode">删除此节点</a-menu-item>
-        <a-menu-item key="2" @click="onAddNode">新增子节点</a-menu-item>
-        <a-menu-item key="3" @click="onCollapseNode">折叠</a-menu-item>
-      </a-menu>`;
+      <ul class="ant-dropdown-menu-item ant-dropdown-menu-item-only-child ant-dropdown-menu ant-dropdown-menu-root ant-dropdown-menu-vertical ant-dropdown-menu-light">
+        ${header}
+        <li class="ant-dropdown-menu-item ant-dropdown-menu-item-only-child add-node">新增子节点</li>
+        ${footer}
+      </ul>`;
     },
     handleMenuClick: (target, item) => {
       console.log(target, item);
+      switch(target.className) {
+        case 'add-node':
+          break
+        case 'del-node':
+          break
+        case 'collapse-node':
+          treeGraph.updateItem(item, {collapsed: true})
+          treeGraph.setItemState(item, 'collapsed', true)
+          treeGraph.layout()
+          break
+      }
     },
     // offsetX and offsetY include the padding of the parent container
     // 需要加上父级容器的 padding-left 16 与自身偏移量 10
@@ -230,6 +275,8 @@ const g6 = (data) => {
   //小地图
   const minimap = new G6.Minimap({
     size: [150, 100],
+    className: "minimap",
+    viewportClassName: 'minimap-viewport'
   });
   // 图实例化，至少需要为图设置挂载容器、宽、高
   treeGraph = new G6.TreeGraph({
@@ -238,15 +285,15 @@ const g6 = (data) => {
     height, // 图的高度
     modes: {
       default: [
-        // {
-        //   type: 'collapse-expand',
-        //   onChange: function onChange(item, collapsed) {
-        //     console.log('item', item)
-        //     const data = item.getModel();
-        //     data.collapsed = collapsed;
-        //     return true;
-        //   },
-        // },
+        {
+          type: 'collapse-expand',
+          onChange: function onChange(item, collapsed) {
+            console.log('item', item)
+            const data = item.getModel();
+            data.collapsed = collapsed;
+            return true;
+          },
+        },
         'drag-canvas',
         'zoom-canvas',
       ],
@@ -285,7 +332,9 @@ const g6 = (data) => {
   treeGraph.node(function (node) {
    
     const { depth } = node
-    maxDepth.value = maxDepth.value > depth ? maxDepth.value : depth
+    if( node.children && node.children.length > 0 ) {
+      maxDepth.value = maxDepth.value > depth ? maxDepth.value : depth
+    }
     const color = colorSets[depth]
     return {
       collapsed: false,
@@ -339,21 +388,30 @@ const g6 = (data) => {
 
 
 const getOrganization = async () => {
-  data.value = await getOrganizationData()
+  treeData.value = await getOrganizationData()
   //g6(data.value)
 }
 
 const fastCollapseExpand = ( data ) => {
-  const findNodes = treeGraph.findAll('node', (node) => {
-    return node.get('model').depth == data.ind
-  })
-  console.log(findNodes)
-  findNodes.forEach((node) => {
+  G6.Util.traverseTree(treeData.value, (node) => {
     console.log(node)
-    treeGraph.updateItem(node, {collapsed: true})
-    treeGraph.setItemState(node, 'collapsed', true)
-    treeGraph.layout()
   })
+  treeGraph.findAll('node', (node) => {
+    console.log(node)
+    return node.getModel().depth == data.depth
+  }).forEach((node) => { 
+    // 有子树的节点才收缩或者展开 已经展开或者收缩的不改变
+    if ( node.getModel().children
+        && node.getModel().children.length > 0
+        && (node.getModel().collapsed !== data.checked) 
+    ) {
+      //console.log(node.getModel(), data)
+      treeGraph.updateItem(node, {collapsed: data.checked})
+      treeGraph.setItemState(node, 'collapsed', data.checked)
+    }
+  })
+  // 同时操作多个节点 所有节点状态修改完毕后再重绘,不然展开后位置重叠
+  treeGraph.layout()
 }
 </script>
 
@@ -362,6 +420,9 @@ const fastCollapseExpand = ( data ) => {
   position: relative;
   width: 100%;
   min-height: calc(100vh - 64px);
+  .minimap {
+    border: 1px solid #e2e2e2;
+  }
 }
 :v-deep(.g6-minimap-container) {
   border: 1px solid #e2e2e2;
@@ -369,7 +430,7 @@ const fastCollapseExpand = ( data ) => {
 :v-deep(.g6-minimap-viewport) {
   border: 2px solid rgb(25, 128, 255);
 }
-.g6-minimap-container {
+.minimap {
   border: 1px solid #e2e2e2;
 }
 .g6-minimap-viewport {
