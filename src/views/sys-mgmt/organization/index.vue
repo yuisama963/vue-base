@@ -2,7 +2,7 @@
  * @Author: error: git config user.name && git config user.email & please set dead value or install git
  * @Date: 2022-08-03 18:11:25
  * @LastEditors: error: git config user.name && git config user.email & please set dead value or install git
- * @LastEditTime: 2022-08-18 20:31:04
+ * @LastEditTime: 2022-08-19 18:25:08
  * @FilePath: \basic\src\views\sys-mgmt\organization\index.vue
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
 -->
@@ -11,9 +11,10 @@
   <a-row justify="space-between">
     <a-input-search
       v-model:value="searchRes"
-      placeholder="input search text"
+      placeholder="请输入节点名称"
       style="width: 200px"
       @search="onSearch"
+      allow-clear
     />
     <a-row>
       <legend-item
@@ -25,17 +26,8 @@
     </a-row>
   </a-row>
   <div id="mountNode"></div>
-  <a-modal
-      v-model:visible="visible"
-      title="Basic Modal"
-      width="100%"
-      wrap-class-name="full-modal"
-      @ok="handleOk"
-    >
-      <section>
-        
-      </section>
-  </a-modal>
+  <node-mgmt-dialog ref="nodeMgmtDialogRef"></node-mgmt-dialog>
+  <add-node-dialog ref="addNodeDialogRef" @onAddNode=""></add-node-dialog>
 </div>
  
 </template>
@@ -44,14 +36,16 @@
 import G6 from '@antv/g6'
 import { getOrganizationData } from '@/api/sys'
 import { ref, watch, onMounted } from 'vue'
-import { arrayFlagLevel } from '@/utils/tree'
 import { Tree_Graph_Subject_Colors } from '@/constant'
-import legendItem from './components/legendItem.vue';
+import legendItem from './components/legendItem.vue'
+import addNodeDialog from './components/addNodeDialog.vue'
+import nodeMgmtDialog from './components/nodeMgmtDialog.vue'
+import NodeMgmtDialog from './components/nodeMgmtDialog.vue'
 
 let maxDepth = ref(0)
 //节点管理弹窗
-const nodeMgmtDialogVisible = ref(false)
-const addNodeDialogVisible = ref(false)
+const nodeMgmtDialogRef = ref(null)
+const addNodeDialogRef = ref(null)
 // g6工具库
 const Util = G6.Util
 
@@ -180,25 +174,37 @@ const onSearch = () => {
   //   console.log(node)
   //   //return node.getModel().name.includes()
   // })
+  G6.Util.traverseTree(treeData.value, (node) => {
+    node.collapsed = false
+    if(node.name.includes(searchRes.value)) {
+      console.log(node)
+      node.type = 'background-animate'
+    } else {
+      node.type = 'circle'
+    }
+    return true
+  })
   treeGraph.getNodes().forEach((node) => {
     console.log("all", node)
     if (node.getModel().name.includes(searchRes.value)) {
       console.log("include", node)
       //treeGraph.setItemState(node, 'focus', true);
       //如果搜索到的节点的父节点折叠，自动打开
-      const parentNode = node.get('parent')
-      if (parentNode.getModel().collapsed) {
-        treeGraph.updateItem(parentNode, {collapsed: false})
-        treeGraph.setItemState(parentNode, 'collapsed', false)
-      }
+      // const parentNode = node.get('parent')
+      // if (parentNode.getModel().collapsed) {
+      //   treeGraph.updateItem(parentNode, {collapsed: false})
+      //   treeGraph.setItemState(parentNode, 'collapsed', false)
+      // }
       
       treeGraph.updateItem(node, {type: 'background-animate'})
-      console.log("parent", parentNode)
+      //console.log("parent", parentNode)
     } else {
       treeGraph.updateItem(node, {type: 'circle'})
     }
   })
-  treeGraph.layout()
+  treeGraph.layout();
+  //treeGraph.fitView();
+  //treeGraph.layout()
   // const node = treeGraph.findById(searchRes.value);
   // treeGraph.setItemState(node, 'focus', true);
   // treeGraph.updateItem(node, {type: 'background-animate'})
@@ -239,20 +245,21 @@ const g6 = (data) => {
         console.log(evt.item)
         const data = evt.item.getModel()
         console.log(data)
-        header = data.depth > 0 ? `<li class="ant-dropdown-menu-item ant-dropdown-menu-item-only-child del-node">删除此节点</li>` : ''
-        footer = data.depth > 0 && data.children && data.children.length > 0 ? `<li class="collapse-node">折叠</li>` : ''
+        header = data.depth > 0 ? `<li data-func="del-node" class="ant-dropdown-menu-item ant-dropdown-menu-item-only-child del-node">删除此节点</li>` : ''
+        footer = data.depth > 0 && data.children && data.children.length > 0 ? `<li data-func="collapse-node" class="collapse-node">折叠</li>` : ''
       }
       return `
       <ul class="ant-dropdown-menu-item ant-dropdown-menu-item-only-child ant-dropdown-menu ant-dropdown-menu-root ant-dropdown-menu-vertical ant-dropdown-menu-light">
         ${header}
-        <li class="ant-dropdown-menu-item ant-dropdown-menu-item-only-child add-node">新增子节点</li>
+        <li data-func="add-node" class="ant-dropdown-menu-item ant-dropdown-menu-item-only-child add-node">新增子节点</li>
         ${footer}
       </ul>`;
     },
     handleMenuClick: (target, item) => {
-      console.log(target, item);
-      switch(target.className) {
+      console.log(target.dataset, item);
+      switch(target.dataset.func) {
         case 'add-node':
+          addNodeDialogRef.value.openDialog()
           break
         case 'del-node':
           break
@@ -329,7 +336,7 @@ const g6 = (data) => {
     },
     plugins: [minimap, contextMenu]
   });
-  treeGraph.node(function (node) {
+  treeGraph.node((node) => {
    
     const { depth } = node
     if( node.children && node.children.length > 0 ) {
@@ -337,7 +344,7 @@ const g6 = (data) => {
     }
     const color = colorSets[depth]
     return {
-      collapsed: false,
+      //collapsed: false,
       label: node.name || node.id,
       labelCfg: {
         offset: 10,
@@ -377,12 +384,11 @@ const g6 = (data) => {
   treeGraph.data(data);
   treeGraph.render();
   treeGraph.fitView();
-
   treeGraph.on('node:click', (ev) => {
     const node = ev.item; // 被点击的节点元素
     const shape = ev.target; // 被点击的图形，可根据该信息作出不同响应，以达到局部响应效果
     // ... do sth
-    visible.value = true
+    nodeMgmtDialogRef.value.openDialog()
   });
 }
 
@@ -391,23 +397,18 @@ const getOrganization = async () => {
   treeData.value = await getOrganizationData()
   //g6(data.value)
 }
-
+//快速折叠
 const fastCollapseExpand = ( data ) => {
   G6.Util.traverseTree(treeData.value, (node) => {
-    console.log(node)
-  })
-  treeGraph.findAll('node', (node) => {
-    console.log(node)
-    return node.getModel().depth == data.depth
-  }).forEach((node) => { 
-    // 有子树的节点才收缩或者展开 已经展开或者收缩的不改变
-    if ( node.getModel().children
-        && node.getModel().children.length > 0
-        && (node.getModel().collapsed !== data.checked) 
-    ) {
-      //console.log(node.getModel(), data)
-      treeGraph.updateItem(node, {collapsed: data.checked})
-      treeGraph.setItemState(node, 'collapsed', data.checked)
+    //console.log(node)
+    if (node.depth == data.depth) {
+      // 有子树的节点才收缩或者展开 已经展开或者收缩的不改变
+      if (node.children
+          && node.children.length > 0
+          && node.collapsed !== data.checked
+      ) {
+        node.collapsed = data.checked
+      }
     }
   })
   // 同时操作多个节点 所有节点状态修改完毕后再重绘,不然展开后位置重叠
