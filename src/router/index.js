@@ -2,7 +2,7 @@
  * @Author: error: git config user.name && git config user.email & please set dead value or install git
  * @Date: 2022-06-09 18:08:47
  * @LastEditors: error: git config user.name && git config user.email & please set dead value or install git
- * @LastEditTime: 2022-08-10 15:00:59
+ * @LastEditTime: 2022-08-23 16:34:02
  * @FilePath: \basic\src\router\index.js
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
  */
@@ -81,13 +81,13 @@ export const privateRoutes = [
   //   ]
   // }
   {
-    path: 'workplace',
-    name: 'workplace',
+    path: 'dashboard',
+    name: 'dashboard',
     component: () =>
-      import('@/views/workplace/index.vue'),
+      import('@/views/dashboard/index.vue'),
     meta: {
       title: '工作台',
-      id: 'workplace'
+      id: 'dashboard'
     }
   },
   {
@@ -100,25 +100,25 @@ export const privateRoutes = [
     }
   },
   {
-    path: 'shipper-mgmt',
+    path: 'owner-mgmt',
     component: () => 
-      import('@/views/user-ctr/shipper-mgmt/index.vue'),
-    name: 'shipperMgmt',
+      import('@/views/user-ctr/owner-mgmt/index.vue'),
+    name: 'ownerMgmt',
     meta: {
-      title: '托运方管理',
+      title: '货主管理',
       icon: 'personnel-manage',
-      id: 'shipperMgmt'
+      id: 'ownerMgmt'
     }
   },
   {
-    path: 'carrier-mgmt',
+    path: 'driver-mgmt',
     component: () => 
-      import('@/views/user-ctr/carrier-mgmt/index.vue'),
-    name: 'carrierMgmt',
+      import('@/views/user-ctr/driver-mgmt/index.vue'),
+    name: 'driverMgmt',
     meta: {
-      title: '承运方管理',
+      title: '司机管理',
       icon: 'personnel-manage',
-      id: 'carrierMgmt'
+      id: 'driverMgmt'
     }
   },
   {
@@ -173,16 +173,16 @@ export const publicRoutes = [
     path: '/',
     component: layout,
     name: 'home',
-    redirect: '/workplace',
+    redirect: '/dashboard',
     children: [
       {
-        path: 'workplace',
-        name: 'workplace',
+        path: 'dashboard',
+        name: 'dashboard',
         component: () =>
-          import('@/views/workplace/index.vue'),
+          import('@/views/dashboard/index.vue'),
         meta: {
           title: '工作台',
-          id: 'workplace'
+          id: 'dashboard'
         }
       }
     ]

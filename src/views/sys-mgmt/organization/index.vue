@@ -2,7 +2,7 @@
  * @Author: error: git config user.name && git config user.email & please set dead value or install git
  * @Date: 2022-08-03 18:11:25
  * @LastEditors: error: git config user.name && git config user.email & please set dead value or install git
- * @LastEditTime: 2022-08-19 18:25:08
+ * @LastEditTime: 2022-08-23 18:01:08
  * @FilePath: \basic\src\views\sys-mgmt\organization\index.vue
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
 -->
@@ -26,8 +26,9 @@
     </a-row>
   </a-row>
   <div id="mountNode"></div>
-  <node-mgmt-dialog ref="nodeMgmtDialogRef"></node-mgmt-dialog>
+  <node-mgmt-dialog ref="nodeMgmtDialogRef" :selectedNode="selectedNode" @onOpenAddMemberDialog="onOpenAddMemberDialog"></node-mgmt-dialog>
   <add-node-dialog ref="addNodeDialogRef" @onAddNode=""></add-node-dialog>
+  <add-member-dialog ref="addMemberDialogRef" @onAddNode=""></add-member-dialog>
 </div>
  
 </template>
@@ -40,12 +41,15 @@ import { Tree_Graph_Subject_Colors } from '@/constant'
 import legendItem from './components/legendItem.vue'
 import addNodeDialog from './components/addNodeDialog.vue'
 import nodeMgmtDialog from './components/nodeMgmtDialog.vue'
-import NodeMgmtDialog from './components/nodeMgmtDialog.vue'
+import addMemberDialog from './components/addMemberDialog.vue'
 
+// 选择的节点
+const selectedNode = ref(null)
 let maxDepth = ref(0)
 //节点管理弹窗
 const nodeMgmtDialogRef = ref(null)
 const addNodeDialogRef = ref(null)
+const addMemberDialogRef = ref(null)
 // g6工具库
 const Util = G6.Util
 
@@ -256,7 +260,7 @@ const g6 = (data) => {
       </ul>`;
     },
     handleMenuClick: (target, item) => {
-      console.log(target.dataset, item);
+      console.log(target, item);
       switch(target.dataset.func) {
         case 'add-node':
           addNodeDialogRef.value.openDialog()
@@ -292,15 +296,15 @@ const g6 = (data) => {
     height, // 图的高度
     modes: {
       default: [
-        {
-          type: 'collapse-expand',
-          onChange: function onChange(item, collapsed) {
-            console.log('item', item)
-            const data = item.getModel();
-            data.collapsed = collapsed;
-            return true;
-          },
-        },
+        // {
+        //   type: 'collapse-expand',
+        //   onChange: function onChange(item, collapsed) {
+        //     console.log('item', item)
+        //     const data = item.getModel();
+        //     data.collapsed = collapsed;
+        //     return true;
+        //   },
+        // },
         'drag-canvas',
         'zoom-canvas',
       ],
@@ -384,10 +388,17 @@ const g6 = (data) => {
   treeGraph.data(data);
   treeGraph.render();
   treeGraph.fitView();
+
+  
+  // 打开节点管理
   treeGraph.on('node:click', (ev) => {
+    console.log(ev)
     const node = ev.item; // 被点击的节点元素
     const shape = ev.target; // 被点击的图形，可根据该信息作出不同响应，以达到局部响应效果
     // ... do sth
+    
+    selectedNode.value = {name: node.getModel().name, id: node.getModel().id}
+    console.log(node.getModel().id)
     nodeMgmtDialogRef.value.openDialog()
   });
 }
@@ -413,6 +424,9 @@ const fastCollapseExpand = ( data ) => {
   })
   // 同时操作多个节点 所有节点状态修改完毕后再重绘,不然展开后位置重叠
   treeGraph.layout()
+}
+const onOpenAddMemberDialog = () => {
+  addMemberDialogRef.value.openDialog()
 }
 </script>
 

@@ -2,7 +2,7 @@
  * @Author: error: git config user.name && git config user.email & please set dead value or install git
  * @Date: 2022-07-27 16:13:42
  * @LastEditors: error: git config user.name && git config user.email & please set dead value or install git
- * @LastEditTime: 2022-08-19 17:10:51
+ * @LastEditTime: 2022-08-22 14:22:37
  * @FilePath: \basic\src\api\sys.js
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
  */
@@ -45,5 +45,24 @@ export const login = data => {
     url: '/sys/organization/add',
     method: 'POST',
     data
+  })
+}
+
+/**
+ * 获取节点下的成员列表
+ */
+ export const getNodeMemberListData = data => {
+  return request({
+    url: '/sys/organization/memberlist',
+    params: data
+  })
+}
+
+/**
+ * 获取角色列表
+ */
+ export const getRoleListData = () => {
+  return request({
+    url: '/sys/role/list'
   })
 }

@@ -2,7 +2,7 @@
  * @Author: error: git config user.name && git config user.email & please set dead value or install git
  * @Date: 2022-07-27 16:00:51
  * @LastEditors: error: git config user.name && git config user.email & please set dead value or install git
- * @LastEditTime: 2022-08-19 17:11:59
+ * @LastEditTime: 2022-08-23 16:31:14
  * @FilePath: \basic\src\mock\index.js
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
  */
@@ -39,13 +39,13 @@ Mock.mock('/api/sys/profile', 'get', (params) => {
         "avatar":"https://m.imooc.com/static/wap/static/common/img/logo-small@2x.png",
         "permission":{
             "menus":[
-                { id: "workplace", name: '工作台'},
+                { id: "dashboard", name: '工作台'},
                 // { id: "businessCtr", name: '业务中心'},
                 // { id: "operationCtr", name: '运营中心'},
                 // { id: "settlementCtr", name: '结算中心'},
                 { id: "userCtr", name: '用户中心', children: [
-                  {id: 'shipperMgmt', name: "托运方管理"},
-                  {id: 'carrierMgmt', name: "承运方管理"}]},
+                  {id: 'ownerMgmt', name: "货主管理"},
+                  {id: 'driverMgmt', name: "司机管理"}]},
                 // { id: "validityMgmt", name: '合规性管理'},
                 { id: "sysMgmt", name: '系统管理', children: [
                   {id: 'organization', name: "组织架构"},
@@ -238,5 +238,75 @@ Mock.mock('/api/sys/organization/list', 'get', (params) => {
       ]
     },
     "message": "执行成功"
+  }
+})
+
+Mock.mock('/api/sys/organization/memberlist', 'get', (params) => {
+  return {
+    "success":true,
+    "code":200,
+    "data":[
+      {
+        id: 1,
+        name: '汤跃鹏',
+        phone: '18900221004',
+        status: true,
+        role: ['运营主管', '调度'],
+        operation: '角色配置'
+      },
+      {
+        id: 2,
+        name: '欧凯怡',
+        phone: '18900221004',
+        status: true,
+        role: ['运营'],
+        operation: 'Invite'
+      },
+      {
+        id: 3,
+        name: 'text',
+        phone: '18900221004',
+        status: true,
+        role: ['1','2', '3', 4, 5, 6, 7, 8],
+        operation: 'Invite'
+      },
+      {
+        id: 4,
+        name: 'text',
+        phone: '18900221004',
+        status: true,
+        role: ['green','beekblue', 'red'],
+        operation: 'Invite'
+      }
+    ],
+    "message":"获取资料成功"
+  }
+})
+
+Mock.mock('/api/sys/role/list', 'get', (params) => {
+  return {
+    "success":true,
+    "code":200,
+    "data":[
+      {
+        id: 1,
+        name: '运营主管',
+        des: '备注备注备注',
+        status: true
+      },
+      {
+        id: 2,
+        name: '技术主管',
+        des: '备注备注备注',
+        status: false
+      },
+      {
+        id: 3,
+        name: '角色名',
+        des: '备注备注备注',
+        status: true
+      }
+    ],
+    "message":"获取资料成功"
   }
 })
