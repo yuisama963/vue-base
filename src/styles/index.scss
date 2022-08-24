@@ -56,3 +56,45 @@ h1, h2, h3, h4, h5, h6, p {
   margin: 0;
   padding: 0;
 }
+
+.margin-right-8 {
+  margin-right: 8px;
+}
+.margin-left-16 {
+  margin-left: 16px;
+}
+.margin-right-16 {
+  margin-right: 16px;
+}
+.margin-right-24 {
+  margin-right: 24px;
+}
+
+// /* 屏幕大于1800px的时候写死html的font-size值为200px */
+// @media screen and (max-width: 1440px) {
+//   html {
+//       font-size: 144px !important;
+//       /*no*/
+//   }
+// }
+// /* 屏幕小于1300px的时候写死html的font-size值为130px */
+// @media screen and (min-width: 1440px) and (max-width: 1920px) {
+//   html {
+//       font-size: 192px !important;
+//       /*no*/
+//   }
+// }
+// /* 屏幕小于1300px的时候写死html的font-size值为130px */
+// @media screen and (min-width: 1920px) and (max-width: 2560px) {
+//   html {
+//       font-size: 256px !important;
+//       /*no*/
+//   }
+// }
+// /* 屏幕小于1300px的时候写死html的font-size值为130px */
+// @media screen and (min-width: 2560px) and (max-width: 4096px) {
+//   html {
+//       font-size: 409px !important;
+//       /*no*/
+//   }
+// }

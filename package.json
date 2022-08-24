@@ -22,7 +22,10 @@
   },
   "devDependencies": {
     "@vitejs/plugin-vue": "^2.3.3",
+    "amfe-flexible": "^2.2.1",
+    "autoprefixer": "^10.4.8",
     "mockjs": "^1.1.0",
+    "postcss-pxtorem": "^6.0.0",
     "sass": "^1.52.2",
     "unplugin-vue-components": "^0.19.6",
     "vite": "^2.9.9",

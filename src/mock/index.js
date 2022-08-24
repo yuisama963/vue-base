@@ -2,7 +2,7 @@
  * @Author: error: git config user.name && git config user.email & please set dead value or install git
  * @Date: 2022-07-27 16:00:51
  * @LastEditors: error: git config user.name && git config user.email & please set dead value or install git
- * @LastEditTime: 2022-08-23 16:31:14
+ * @LastEditTime: 2022-08-24 17:51:38
  * @FilePath: \basic\src\mock\index.js
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
  */
@@ -251,32 +251,28 @@ Mock.mock('/api/sys/organization/memberlist', 'get', (params) => {
         name: '汤跃鹏',
         phone: '18900221004',
         status: true,
-        role: ['运营主管', '调度'],
-        operation: '角色配置'
+        role: ['运营主管', '调度']
       },
       {
         id: 2,
         name: '欧凯怡',
         phone: '18900221004',
         status: true,
-        role: ['运营'],
-        operation: 'Invite'
+        role: ['运营']
       },
       {
         id: 3,
         name: 'text',
         phone: '18900221004',
         status: true,
-        role: ['1','2', '3', 4, 5, 6, 7, 8],
-        operation: 'Invite'
+        role: ['1','2', '3', 4, 5, 6, 7, 8]
       },
       {
         id: 4,
         name: 'text',
         phone: '18900221004',
         status: true,
-        role: ['green','beekblue', 'red'],
-        operation: 'Invite'
+        role: ['green','beekblue', 'red']
       }
     ],
     "message":"获取资料成功"
@@ -305,6 +301,53 @@ Mock.mock('/api/sys/role/list', 'get', (params) => {
         name: '角色名',
         des: '备注备注备注',
         status: true
+      }
+    ],
+    "message":"获取资料成功"
+  }
+})
+
+Mock.mock('/api/sys/dingding/list', 'get', (params) => {
+  return {
+    "success":true,
+    "code":200,
+    "data":[
+      {
+        id: 1,
+        name: '汤岳鹏',
+        phone: '18900221004',
+        role: ['运营主管'],
+
+      },
+      {
+        id: 2,
+        name: '李剑',
+        phone: '18900221004',
+        role: ['运营主管', '产品经理', '千隼运维', 'xxx'],
+      },
+      {
+        id: 3,
+        name: '曾燕辉',
+        phone: '18900221004',
+        role: [],
+      },
+      {
+        id: 4,
+        name: '曾国梁',
+        phone: '18900221004',
+        role: ['天地人管理员', '货有友开发'],
+      },
+      {
+        id: 4,
+        name: '曾俊杰',
+        phone: '18900221004',
+        role: ['天地人管理员', '货有友开发'],
+      },
+      {
+        id: 4,
+        name: '曾某某',
+        phone: '18900221004',
+        role: [],
       }
     ],
     "message":"获取资料成功"

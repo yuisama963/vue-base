@@ -2,7 +2,7 @@
  * @Author: error: git config user.name && git config user.email & please set dead value or install git
  * @Date: 2022-08-03 18:11:25
  * @LastEditors: error: git config user.name && git config user.email & please set dead value or install git
- * @LastEditTime: 2022-08-23 18:01:08
+ * @LastEditTime: 2022-08-24 15:37:22
  * @FilePath: \basic\src\views\sys-mgmt\organization\index.vue
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
 -->
@@ -12,9 +12,9 @@
     <a-input-search
       v-model:value="searchRes"
       placeholder="请输入节点名称"
-      style="width: 200px"
       @search="onSearch"
       allow-clear
+      class="search-node-input"
     />
     <a-row>
       <legend-item
@@ -450,5 +450,8 @@ const onOpenAddMemberDialog = () => {
 }
 .g6-minimap-viewport {
   border: 2px solid rgb(25, 128, 255);
+}
+.search-node-input {
+  width: 200px;
 }
 </style>

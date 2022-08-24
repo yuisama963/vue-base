@@ -2,15 +2,17 @@
  * @Author: error: git config user.name && git config user.email & please set dead value or install git
  * @Date: 2022-08-16 18:26:46
  * @LastEditors: error: git config user.name && git config user.email & please set dead value or install git
- * @LastEditTime: 2022-08-23 18:13:44
+ * @LastEditTime: 2022-08-24 17:04:41
  * @FilePath: \basic\src\views\sys-mgmt\organization\components\nodeMgmt.vue
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
 -->
 <template>
   <a-modal
     v-model:visible="visible"
-    :width="1024"
     :footer="null"
+    :width="1024"
+    :bodyStyle="{overflow: 'auto'}"
+    class="node-mgmt"
   > 
     <template #title>
       <a-row justify="start">
@@ -18,10 +20,10 @@
         <template v-else>
           <a-input v-model:value="nodeName" placeholder="请输入节点名称" style="width: 200px"/>
         </template>
-        <edit-outlined @click="editTit"/>
+        <edit-outlined :style="{ color: '#1890FF' }" @click="editTit"/>
       </a-row>
     </template>
-    <section>
+    <section class="node-mgmt-content">
       <a-row justify="space-between" class="tool-bar">
         <a-input-search
           v-model:value="searchRes"
@@ -54,11 +56,13 @@
             </span>
           </template>
           <template v-else-if="column.key === 'operation'">
-            <a-button type="link">{{record.operation}}</a-button>
+            <a-button type="link">角色配置</a-button>
           </template>
         </template>
       </a-table>
-      <a-pagination size="small" :total="50" :show-total="total => `共 ${total} 人`" />
+      <a-row justify="end" class="pagination-wrapper">
+        <a-pagination  size="small" :total="50" :show-total="total => `共 ${total} 人`" />
+      </a-row>
     </section>
   </a-modal>
 </template>
@@ -141,5 +145,11 @@ const onAddMember = () => {
 <style lang="scss" scoped>
 .tool-bar {
   margin-bottom: 16px;
+}
+.pagination-wrapper {
+  margin-top: 16px;
+}
+.node-mgmt-content {
+  min-width: 976px;
 }
 </style>

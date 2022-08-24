@@ -2,7 +2,7 @@
  * @Author: error: git config user.name && git config user.email & please set dead value or install git
  * @Date: 2022-06-10 11:32:17
  * @LastEditors: error: git config user.name && git config user.email & please set dead value or install git
- * @LastEditTime: 2022-08-12 15:36:14
+ * @LastEditTime: 2022-08-24 15:32:01
  * @FilePath: \basic\src\components\TagsView\index.vue
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
 -->
@@ -14,8 +14,8 @@
             >
             <template #tab>
                 <span>
-                    <router-link :to="tag.path">{{tag.meta.title}}</router-link>
                     <reload-outlined :style="{color: '#8C8C8C'}" v-if="isActive(tag)"/>
+                    <router-link :to="tag.path">{{tag.meta.title}}</router-link>
                     <close-outlined
                         v-show="tag.path != '/workplace'"
                         :style="{color: '#8C8C8C'}"
@@ -25,8 +25,8 @@
             </template>
             </a-tab-pane>
         </a-tabs>
-        <div class="right-extra">
-            <a-dropdown class="context-menu">
+        <a-row class="right-extra" justify="center">
+            <!-- <a-dropdown class="context-menu">
                 <a class="ant-dropdown-link" @click.prevent>
                     <ellipsis-outlined :rotate="180"/>
                 </a>
@@ -37,9 +37,9 @@
                         </a-menu-item>
                     </a-menu>
                 </template>
-            </a-dropdown>
+            </a-dropdown> -->
             <cloud-avatar></cloud-avatar>
-        </div>
+        </a-row>
     </div>
 </template>
 
@@ -100,17 +100,16 @@ const onCloseClick = index => {
     display: flex;
     .tags-view-wrapper {
         flex: 1;
-        padding: 12px 0px 12px 24px; 
+        padding: 16px 0px 0 24px; 
     }
     .right-extra {
         box-shadow: 0px 2px 8px rgba(0, 0, 0, 0.15);
-        width: 100px;
-        height: 64px;
-        display: flex;
+        width: 80px;
+        height: 56px;
     }
     .context-menu {
         width: 46px;
-        height: 64px;
+        height: 56px;
     }
 }
 :v-deep(.ant-tabs-nav-operations) {
