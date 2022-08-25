@@ -2,7 +2,7 @@
  * @Author: error: git config user.name && git config user.email & please set dead value or install git
  * @Date: 2022-07-27 16:00:51
  * @LastEditors: error: git config user.name && git config user.email & please set dead value or install git
- * @LastEditTime: 2022-08-24 17:51:38
+ * @LastEditTime: 2022-08-25 18:30:15
  * @FilePath: \basic\src\mock\index.js
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
  */
@@ -298,6 +298,48 @@ Mock.mock('/api/sys/role/list', 'get', (params) => {
       },
       {
         id: 3,
+        name: '天地人管理员',
+        des: '备注备注备注',
+        status: true
+      },
+      {
+        id: 4,
+        name: '货有友开发',
+        des: '备注备注备注',
+        status: true
+      },
+      {
+        id: 5,
+        name: '产品经理',
+        des: '备注备注备注',
+        status: true
+      },
+      {
+        id: 6,
+        name: '千隼运维',
+        des: '备注备注备注',
+        status: true
+      },
+      {
+        id: 7,
+        name: '管理员',
+        des: '备注备注备注',
+        status: true
+      },
+      {
+        id: 8,
+        name: '角色名',
+        des: '备注备注备注',
+        status: true
+      },
+      {
+        id: 9,
+        name: '角色名',
+        des: '备注备注备注',
+        status: true
+      },
+      {
+        id: 10,
         name: '角色名',
         des: '备注备注备注',
         status: true
@@ -338,13 +380,37 @@ Mock.mock('/api/sys/dingding/list', 'get', (params) => {
         role: ['天地人管理员', '货有友开发'],
       },
       {
-        id: 4,
+        id: 5,
         name: '曾俊杰',
         phone: '18900221004',
         role: ['天地人管理员', '货有友开发'],
       },
       {
-        id: 4,
+        id: 6,
+        name: '曾某某',
+        phone: '18900221004',
+        role: [],
+      },
+      {
+        id: 7,
+        name: '曾某某',
+        phone: '18900221004',
+        role: [],
+      },
+      {
+        id: 8,
+        name: '曾某某',
+        phone: '18900221004',
+        role: [],
+      },
+      {
+        id: 9,
+        name: '曾某某',
+        phone: '18900221004',
+        role: [],
+      },
+      {
+        id: 10,
         name: '曾某某',
         phone: '18900221004',
         role: [],

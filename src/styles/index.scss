@@ -1,4 +1,5 @@
 @import './mixin.scss';
+@import './layout.scss';
 
 html,
 body {
@@ -22,6 +23,7 @@ body {
   box-sizing: inherit;
   margin: 0;
   padding: 0;
+  box-sizing: border-box;
 }
 
 a:focus,
@@ -55,19 +57,6 @@ div:focus {
 h1, h2, h3, h4, h5, h6, p {
   margin: 0;
   padding: 0;
-}
-
-.margin-right-8 {
-  margin-right: 8px;
-}
-.margin-left-16 {
-  margin-left: 16px;
-}
-.margin-right-16 {
-  margin-right: 16px;
-}
-.margin-right-24 {
-  margin-right: 24px;
 }
 
 // /* 屏幕大于1800px的时候写死html的font-size值为200px */
