@@ -2,7 +2,7 @@
  * @Author: error: git config user.name && git config user.email & please set dead value or install git
  * @Date: 2022-06-10 18:01:22
  * @LastEditors: error: git config user.name && git config user.email & please set dead value or install git
- * @LastEditTime: 2022-08-01 19:17:45
+ * @LastEditTime: 2022-08-26 17:35:22
  * @FilePath: \basic\src\store\modules\user.js
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
  */
@@ -37,8 +37,9 @@ export default {
           username,
           password: md5(password)
         })
-          .then(data => {
-            console.log(data)
+          .then(res => {
+            console.log(res.data)
+            const { data } = res
             this.commit('user/setToken', data.token)
             //保存登录时间
             setTimeStamp()
@@ -50,7 +51,7 @@ export default {
       })
     },
     async getUserInfo(content) {
-      const res = await getUserInfo()
+      const { data: res} = await getUserInfo()
       this.commit('user/setUserInfo', res)
       return res
     },

@@ -2,7 +2,7 @@
  * @Author: error: git config user.name && git config user.email & please set dead value or install git
  * @Date: 2022-06-09 18:08:47
  * @LastEditors: error: git config user.name && git config user.email & please set dead value or install git
- * @LastEditTime: 2022-08-23 16:34:02
+ * @LastEditTime: 2022-08-26 16:20:27
  * @FilePath: \basic\src\router\index.js
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
  */
@@ -117,7 +117,6 @@ export const privateRoutes = [
     name: 'driverMgmt',
     meta: {
       title: '司机管理',
-      icon: 'personnel-manage',
       id: 'driverMgmt'
     }
   },
@@ -137,7 +136,6 @@ export const privateRoutes = [
     name: 'organization',
     meta: {
       title: '组织架构',
-      icon: 'personnel-manage',
       id: 'organization'
     }
   },
@@ -148,7 +146,6 @@ export const privateRoutes = [
     name: 'roleMgmt',
     meta: {
       title: '角色管理',
-      icon: 'personnel-manage',
       id: 'roleMgmt'
     }
   }
@@ -183,6 +180,26 @@ export const publicRoutes = [
         meta: {
           title: '工作台',
           id: 'dashboard'
+        }
+      },
+      {
+        path: 'create-role',
+        name: 'createRole',
+        component: () =>
+          import('@/views/sys-mgmt/role-mgmt/detail.vue'),
+        meta: {
+          title: '角色主页',
+          id: 'createRole'
+        }
+      },
+      {
+        path: 'edit-role',
+        name: 'editRole',
+        component: () =>
+          import('@/views/sys-mgmt/role-mgmt/detail.vue'),
+        meta: {
+          title: '角色主页',
+          id: 'editRole'
         }
       }
     ]

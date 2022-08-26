@@ -2,7 +2,7 @@
  * @Author: error: git config user.name && git config user.email & please set dead value or install git
  * @Date: 2022-06-10 11:32:17
  * @LastEditors: error: git config user.name && git config user.email & please set dead value or install git
- * @LastEditTime: 2022-08-24 15:32:01
+ * @LastEditTime: 2022-08-26 10:48:35
  * @FilePath: \basic\src\components\TagsView\index.vue
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
 -->
@@ -12,17 +12,16 @@
             <a-tab-pane v-for="(tag, index) in tagsViewList"
                 :key="tag.fullPath"
             >
-            <template #tab>
-                <span>
-                    <reload-outlined :style="{color: '#8C8C8C'}" v-if="isActive(tag)"/>
+                <template #tab>
+                    <reload-outlined class="reload-btn" v-if="isActive(tag)"/>
                     <router-link :to="tag.path">{{tag.meta.title}}</router-link>
                     <close-outlined
-                        v-show="tag.path != '/workplace'"
-                        :style="{color: '#8C8C8C'}"
+                        v-show="tag.path != '/dashboard'"
+                        class="close-btn"
+                        :class="{active: isActive(tag)}"
                         @click.prevent.stop="onCloseClick(index)"
                     />
-                </span>
-            </template>
+                </template>
             </a-tab-pane>
         </a-tabs>
         <a-row class="right-extra" justify="center">
@@ -111,8 +110,23 @@ const onCloseClick = index => {
         width: 46px;
         height: 56px;
     }
+    .reload-btn {
+        color: $themeColor;
+        margin-right: 8px;
+    }
+    .close-btn {
+        color: #8C8C8C;
+        margin-right: 0;
+        margin-left: 8px;
+        &.active {
+            color: $themeColor
+        }
+    }
 }
 :v-deep(.ant-tabs-nav-operations) {
     display: none;
+}
+:v-deep(.ant-tabs-tab .anticon) {
+    margin-right: 0;
 }
 </style>

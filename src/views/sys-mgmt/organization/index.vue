@@ -2,7 +2,7 @@
  * @Author: error: git config user.name && git config user.email & please set dead value or install git
  * @Date: 2022-08-03 18:11:25
  * @LastEditors: error: git config user.name && git config user.email & please set dead value or install git
- * @LastEditTime: 2022-08-24 15:37:22
+ * @LastEditTime: 2022-08-26 19:52:16
  * @FilePath: \basic\src\views\sys-mgmt\organization\index.vue
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
 -->
@@ -15,6 +15,7 @@
       @search="onSearch"
       allow-clear
       class="search-node-input"
+      :loading="searchNodeInputLoading"
     />
     <a-row>
       <legend-item
@@ -26,22 +27,33 @@
     </a-row>
   </a-row>
   <div id="mountNode"></div>
-  <node-mgmt-dialog ref="nodeMgmtDialogRef" :selectedNode="selectedNode" @onOpenAddMemberDialog="onOpenAddMemberDialog"></node-mgmt-dialog>
-  <add-node-dialog ref="addNodeDialogRef" @onAddNode=""></add-node-dialog>
+  <!-- 节点管理弹窗 -->
+  <node-mgmt-dialog
+    ref="nodeMgmtDialogRef"
+    :selectedNode="selectedNode"
+    @onOpenAddMemberDialog="onOpenAddMemberDialog"
+    @onOpenSetRoleDialog="onOpenSetRoleDialog">
+  </node-mgmt-dialog>
+  <!-- 新增节点弹窗 -->
+  <add-node-dialog ref="addNodeDialogRef" @onAddNode="onAddNode"></add-node-dialog>
+  <!-- 添加成员弹窗 -->
   <add-member-dialog ref="addMemberDialogRef" @onAddNode=""></add-member-dialog>
+  <!-- 角色配置弹窗 -->
+  <set-role-dialog ref="setRoleDialogRef" @onSetRole="" :memberInfo="memberInfo"></set-role-dialog>
 </div>
  
 </template>
 
 <script setup>
 import G6 from '@antv/g6'
-import { getOrganizationData } from '@/api/sys'
+import { getOrganizationData, createNode } from '@/api/sys'
 import { ref, watch, onMounted } from 'vue'
 import { Tree_Graph_Subject_Colors } from '@/constant'
 import legendItem from './components/legendItem.vue'
 import addNodeDialog from './components/addNodeDialog.vue'
 import nodeMgmtDialog from './components/nodeMgmtDialog.vue'
 import addMemberDialog from './components/addMemberDialog.vue'
+import setRoleDialog from './components/setRoleDialog.vue'
 
 // 选择的节点
 const selectedNode = ref(null)
@@ -153,8 +165,8 @@ let treeData = ref({})
 
 let treeGraph = null
 // 搜索框数据
-let searchRes = ref('')
-
+const searchRes = ref('')
+const searchNodeInputLoading = ref(false)
 onMounted(async () => {
   await getOrganization()
   G6.Util.traverseTree(treeData.value, (node) => {
@@ -263,7 +275,7 @@ const g6 = (data) => {
       console.log(target, item);
       switch(target.dataset.func) {
         case 'add-node':
-          addNodeDialogRef.value.openDialog()
+          addNodeDialogRef.value.toggleDialog(true)
           break
         case 'del-node':
           break
@@ -399,13 +411,14 @@ const g6 = (data) => {
     
     selectedNode.value = {name: node.getModel().name, id: node.getModel().id}
     console.log(node.getModel().id)
-    nodeMgmtDialogRef.value.openDialog()
+    nodeMgmtDialogRef.value.toggleDialog(true)
   });
 }
 
 
 const getOrganization = async () => {
-  treeData.value = await getOrganizationData()
+  const { data } = await getOrganizationData()
+  treeData.value = data
   //g6(data.value)
 }
 //快速折叠
@@ -425,8 +438,24 @@ const fastCollapseExpand = ( data ) => {
   // 同时操作多个节点 所有节点状态修改完毕后再重绘,不然展开后位置重叠
   treeGraph.layout()
 }
+//打开添加成员弹窗
 const onOpenAddMemberDialog = () => {
-  addMemberDialogRef.value.openDialog()
+  addMemberDialogRef.value.toggleDialog(true)
+}
+//打开配置角色弹窗
+const memberInfo = ref({})
+const setRoleDialogRef = ref(null)
+const onOpenSetRoleDialog = (data) => {
+  memberInfo.value = data.info
+  setRoleDialogRef.value.toggleDialog(true)
+}
+//新增节点弹窗
+const onAddNode = async (data) => {
+  const { success } = await createNode(data)
+  if( success ) {
+    addNodeDialogRef.value.closeLoading()
+    addNodeDialogRef.value.toggleDialog(false)
+  }
 }
 </script>
 

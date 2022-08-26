@@ -2,7 +2,7 @@
  * @Author: error: git config user.name && git config user.email & please set dead value or install git
  * @Date: 2022-06-24 17:45:35
  * @LastEditors: error: git config user.name && git config user.email & please set dead value or install git
- * @LastEditTime: 2022-08-01 19:05:43
+ * @LastEditTime: 2022-08-26 17:25:13
  * @FilePath: \basic\src\utils\request.js
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
  */
@@ -44,7 +44,7 @@ service.interceptors.response.use(
     const { success, message, data } = response.data
     //   要根据success的成功与否决定下面的操作
     if (success) {
-      return data
+      return response.data
     } else {
       // 业务错误
       AndMessage.error(message) // 提示错误消息

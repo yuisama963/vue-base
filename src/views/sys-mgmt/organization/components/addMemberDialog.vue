@@ -2,7 +2,7 @@
  * @Author: error: git config user.name && git config user.email & please set dead value or install git
  * @Date: 2022-08-23 15:49:12
  * @LastEditors: error: git config user.name && git config user.email & please set dead value or install git
- * @LastEditTime: 2022-08-25 18:49:23
+ * @LastEditTime: 2022-08-26 19:24:20
  * @FilePath: \basic\src\views\sys-mgmt\organization\components\addMemberDialog.vue
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
 -->
@@ -27,18 +27,16 @@
             />
           </a-row>
           <div class="to-be-added-area"></div>
-          <div class="search-member-list" v-if="searchRes">
-            <a-divider>搜索结果</a-divider>
-          </div>
+          <a-divider v-if="searchRes">搜索结果</a-divider>
           <div class="all-member-list">
             <a-row class="member-item margin-bottom-8" v-for="member in memberList" justify="space-between">
               
               <a-row type="flex" align="middle">
-                <span>{{member.name}}</span>
-                <dl>
-                  <dt class="member-name">{{member.name}}</dt>
-                  <dd class="member-phone">{{member.phone}}</dd>
-                </dl>
+                <span class="member-avatar">{{member.name}}</span>
+                <div>
+                  <p class="member-name">{{member.name}}</p>
+                  <p class="member-phone">{{member.phone}}</p>
+                </div>
               </a-row>
               <a-row>
                 <a-tag v-for="(role, index) in member.role" :color="Tags_Subject_Colors[index]" v-show="index < 3">{{role}}</a-tag>
@@ -49,7 +47,7 @@
           </div>
         </div>
         <div class="role-list-wrapper">
-          <set-role :roleList="roleList" :selectedRoleList="selectedRoleList"></set-role>
+          <set-role :roleList="roleList" :selectedRoleList="selectedRoleList" @onReload="getAllRoleList"></set-role>
         </div>
       </a-row>
     </section>
@@ -64,30 +62,35 @@ import { ref, onMounted, onUpdated } from 'vue'
 import { getRoleListData, getDingDingMemberListData } from '@/api/sys'
 import SetRole from '@/components/SetRole/index.vue'
 import { Tags_Subject_Colors } from '@/constant'
+import useDialog from '@/hooks/useDialog'
+import useGetAllRoleList from '@/hooks/useGetAllRoleList'
 
-const visible = ref(false)
-const openDialog = async () => {
-  visible.value = true
-}
+// const visible = ref(false)
+// const openDialog = async () => {
+//   visible.value = true
+// }
+const { visible, toggleDialog } = useDialog()
+const { roleList, getAllRoleList } = useGetAllRoleList()
 defineExpose({
-	openDialog
+	toggleDialog
 })
 
 onUpdated(() => {
   getMemberList()
-  getRoleList()
+  getAllRoleList()
 })
 const memberList = ref([])
 // 获取没有节点的成员列表
 const getMemberList = async () => {
-  memberList.value = await getDingDingMemberListData()
+  const { data } = await getDingDingMemberListData()
+  memberList.value = data
 }
 const selectedRoleList = ref([])
-const roleList = ref([])
-const getRoleList = async () => {
-  roleList.value = await getRoleListData()
-  console.log('roleList', roleList.value)
-}
+// const roleList = ref([])
+// const getRoleList = async () => {
+//   const { data } = await getRoleListData()
+//   roleList.value = data
+// }
 const searchRes = ref('')
 const onSearchMember = () => {
 
@@ -112,11 +115,20 @@ const onSearchRole = () => {
         border: 1px solid $colorNeutral5;
         align-items: center;
         padding: 0 16px;
+        .member-avatar {
+          width: 40px;
+          height: 40px;
+          background: $themeColor;
+          font-size: 16px;
+          border-radius: 4px;
+          color: #ffffff;
+          margin-right: 16px;
+        }
         .member-name {
           font-size: 16px;
           color: #000000;
         }
-        .member-name {
+        .member-phone {
           font-size: 12px;
         }
       }

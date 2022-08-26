@@ -2,7 +2,7 @@
  * @Author: error: git config user.name && git config user.email & please set dead value or install git
  * @Date: 2022-08-16 18:26:46
  * @LastEditors: error: git config user.name && git config user.email & please set dead value or install git
- * @LastEditTime: 2022-08-25 14:41:04
+ * @LastEditTime: 2022-08-26 19:45:51
  * @FilePath: \basic\src\views\sys-mgmt\organization\components\nodeMgmt.vue
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
 -->
@@ -18,7 +18,8 @@
       <a-row justify="start">
         <template v-if="!editState"><h5>{{selectedNode.name}}</h5></template>
         <template v-else>
-          <a-input v-model:value="nodeName" placeholder="请输入节点名称" style="width: 200px"/>
+          <a-input v-model:value="nodeName" placeholder="请输入节点名称" style="width: 200px" @blur="onBlur"
+            ref="nodeNameInputRef"/>
         </template>
         <edit-outlined :style="{ color: '#1890FF' }" @click="editTit"/>
       </a-row>
@@ -28,13 +29,13 @@
         <a-input-search
           v-model:value="searchRes"
           placeholder="请输入成员名称"
-          style="width: 264px"
           @search="onSearch"
-          @blur="onBlur"
+          class="search-member-input"
+          :loading="searchMemberLoading"
         />
         <a-button type="primary" @click="onAddMember"><template #icon><PlusOutlined /></template>添加成员</a-button>
       </a-row>
-      <a-table :columns="columns" :data-source="data" :pagination="false">
+      <a-table :columns="columns" :data-source="memberList" :pagination="false" size="small">
         <template #bodyCell="{ column, record }">
           <template v-if="column.key === 'status'">
               <a-switch v-model:checked="record.status" />
@@ -56,7 +57,7 @@
             </span>
           </template>
           <template v-else-if="column.key === 'operation'">
-            <a-button type="link">角色配置</a-button>
+            <a-button type="link" @click="setRole(record)">角色配置</a-button>
           </template>
         </template>
       </a-table>
@@ -72,6 +73,7 @@ import { ref, onMounted, onUpdated } from 'vue'
 import { EditOutlined, PlusOutlined } from '@ant-design/icons-vue'
 import { getNodeMemberListData } from '@/api/sys'
 import { Tags_Subject_Colors } from '@/constant'
+import useDialog from '@/hooks/useDialog'
 
 const props = defineProps({
   selectedNode: {
@@ -84,18 +86,25 @@ onUpdated(() => {
   getMemberList()
 })
 
-const data = ref([])
-const getMemberList = async () => {
-  console.log(props)
-  // {id: props.selectedNode.id}
-  data.value = await getNodeMemberListData()
-}
-const nodeName = ref("技术部")
-const editState = ref(false)
+const searchMemberLoading = ref(false)
 
+const memberList = ref([])
+const getMemberList = async () => {
+  const { data } = await getNodeMemberListData()
+  memberList.value = data
+}
+
+const nodeNameInputRef = ref(null)
+const nodeName = ref('')
+const editState = ref(false)
 const editTit = () => {
   editState.value = true
+  nodeName.value = props.selectedNode.name
+  
+  console.log(nodeNameInputRef)
+  // nodeNameInputRef.value.focus()
 }
+
 
 const columns = [{
   title: '姓名',
@@ -126,19 +135,28 @@ const onSearch = () => {
   
 }
 const onBlur = () => {
+  console.log('blur')
   editState.value = false
 }
-const visible = ref(false)
-const openDialog = () => {
-  visible.value = true
-}
+
+// const visible = ref(false)
+// const openDialog = () => {
+//   visible.value = true
+// }
+
+const { visible, toggleDialog } = useDialog()
 defineExpose({
-	openDialog
+	toggleDialog
 })
-const emits = defineEmits(['onOpenAddMemberDialog'])
+// 打开添加成员
+const emits = defineEmits(['onOpenAddMemberDialog', 'onOpenSetRoleDialog'])
 const onAddMember = () => {
   visible.value = false
   emits('onOpenAddMemberDialog')
+}
+const setRole = (data) => {
+   visible.value = false
+  emits('onOpenSetRoleDialog', {info: data})
 }
 </script>
 
@@ -151,5 +169,8 @@ const onAddMember = () => {
 }
 .node-mgmt-content {
   min-width: 976px;
+}
+.search-member-input {
+  width: 264px;
 }
 </style>

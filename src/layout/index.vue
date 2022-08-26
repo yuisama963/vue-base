@@ -2,7 +2,7 @@
  * @Author: error: git config user.name && git config user.email & please set dead value or install git
  * @Date: 2022-06-09 13:50:55
  * @LastEditors: error: git config user.name && git config user.email & please set dead value or install git
- * @LastEditTime: 2022-08-24 15:27:46
+ * @LastEditTime: 2022-08-26 16:00:51
  * @FilePath: \basic\src\layout\index.vue
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
 -->
@@ -42,17 +42,17 @@ import TagsView from '@/components/TagsView/index.vue'
     min-width: 1440px;
     .main-wrapper {
         margin-left: 208px;
+        background: #fff;
         .header-wrapper {
             background: #fff;
             padding: 0;
             height: 56px;
         }
         .content-wrapper {
-            margin: 24px;
             padding: 24px;
             background: #fff;
             min-height: 280px;
-            min-width: 1184px;
+            min-width: 1232px;
         }
     }
 }

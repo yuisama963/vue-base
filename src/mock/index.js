@@ -2,7 +2,7 @@
  * @Author: error: git config user.name && git config user.email & please set dead value or install git
  * @Date: 2022-07-27 16:00:51
  * @LastEditors: error: git config user.name && git config user.email & please set dead value or install git
- * @LastEditTime: 2022-08-25 18:30:15
+ * @LastEditTime: 2022-08-26 19:40:55
  * @FilePath: \basic\src\mock\index.js
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
  */
@@ -241,6 +241,15 @@ Mock.mock('/api/sys/organization/list', 'get', (params) => {
   }
 })
 
+Mock.mock('/api/sys/organization/add', 'post', (params) => {
+  return {
+    "success": true,
+    "code": 200,
+    "data": null,
+    "message": "执行成功"
+  }
+})
+
 Mock.mock('/api/sys/organization/memberlist', 'get', (params) => {
   return {
     "success":true,
@@ -262,14 +271,56 @@ Mock.mock('/api/sys/organization/memberlist', 'get', (params) => {
       },
       {
         id: 3,
-        name: 'text',
+        name: 'xx3',
         phone: '18900221004',
         status: true,
         role: ['1','2', '3', 4, 5, 6, 7, 8]
       },
       {
         id: 4,
-        name: 'text',
+        name: 'xx4',
+        phone: '18900221004',
+        status: true,
+        role: ['green','beekblue', 'red']
+      },
+      {
+        id: 5,
+        name: 'xx5',
+        phone: '18900221004',
+        status: true,
+        role: ['green','beekblue', 'red']
+      },
+      {
+        id: 6,
+        name: 'xx6',
+        phone: '18900221004',
+        status: true,
+        role: ['green','beekblue', 'red']
+      },
+      {
+        id: 7,
+        name: 'xx7',
+        phone: '18900221004',
+        status: true,
+        role: ['green','beekblue', 'red']
+      },
+      {
+        id: 8,
+        name: 'xx8',
+        phone: '18900221004',
+        status: true,
+        role: ['green','beekblue', 'red']
+      },
+      {
+        id: 9,
+        name: 'xx9',
+        phone: '18900221004',
+        status: true,
+        role: ['green','beekblue', 'red']
+      },
+      {
+        id: 10,
+        name: 'x10',
         phone: '18900221004',
         status: true,
         role: ['green','beekblue', 'red']
@@ -322,25 +373,25 @@ Mock.mock('/api/sys/role/list', 'get', (params) => {
       },
       {
         id: 7,
-        name: '管理员',
+        name: '管理员7',
         des: '备注备注备注',
         status: true
       },
       {
         id: 8,
-        name: '角色名',
+        name: '角色名8',
         des: '备注备注备注',
         status: true
       },
       {
         id: 9,
-        name: '角色名',
+        name: '角色名9',
         des: '备注备注备注',
         status: true
       },
       {
         id: 10,
-        name: '角色名',
+        name: '角色名10',
         des: '备注备注备注',
         status: true
       }
@@ -350,6 +401,77 @@ Mock.mock('/api/sys/role/list', 'get', (params) => {
 })
 
 Mock.mock('/api/sys/dingding/list', 'get', (params) => {
+  return {
+    "success":true,
+    "code":200,
+    "data":[
+      {
+        id: 1,
+        name: '汤岳鹏',
+        phone: '18900221004',
+        role: ['运营主管'],
+
+      },
+      {
+        id: 2,
+        name: '李剑',
+        phone: '18900221004',
+        role: ['运营主管', '产品经理', '千隼运维', 'xxx'],
+      },
+      {
+        id: 3,
+        name: '曾燕辉',
+        phone: '18900221004',
+        role: [],
+      },
+      {
+        id: 4,
+        name: '曾国梁',
+        phone: '18900221004',
+        role: ['天地人管理员', '货有友开发'],
+      },
+      {
+        id: 5,
+        name: '曾俊杰',
+        phone: '18900221004',
+        role: ['天地人管理员', '货有友开发'],
+      },
+      {
+        id: 6,
+        name: '曾某某',
+        phone: '18900221004',
+        role: [],
+      },
+      {
+        id: 7,
+        name: '曾某某',
+        phone: '18900221004',
+        role: [],
+      },
+      {
+        id: 8,
+        name: '曾某某',
+        phone: '18900221004',
+        role: [],
+      },
+      {
+        id: 9,
+        name: '曾某某',
+        phone: '18900221004',
+        role: [],
+      },
+      {
+        id: 10,
+        name: '曾某某',
+        phone: '18900221004',
+        role: [],
+      }
+    ],
+    "message":"获取资料成功"
+  }
+})
+
+Mock.mock('/api/user/owner/list', 'get', (params) => {
   return {
     "success":true,
     "code":200,

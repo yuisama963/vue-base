@@ -2,7 +2,7 @@
  * @Author: error: git config user.name && git config user.email & please set dead value or install git
  * @Date: 2022-08-03 17:52:39
  * @LastEditors: error: git config user.name && git config user.email & please set dead value or install git
- * @LastEditTime: 2022-08-24 17:02:56
+ * @LastEditTime: 2022-08-26 19:31:27
  * @FilePath: \basic\src\views\sys-mgmt\role-mgmt\index.vue
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
 -->
@@ -36,7 +36,7 @@
         <a-button>重置</a-button>
       </a-row>
     </a-row>
-    <a-table :columns="columns" :data-source="data" :pagination="false" :row-selection="rowSelection">
+    <a-table :columns="columns" :data-source="roleList" :pagination="false" :row-selection="rowSelection" size="middle">
       <template #bodyCell="{ column, record }">
         <template v-if="column.dataIndex === 'name'">
             <a-button type="link">{{record.name}}</a-button>
@@ -135,9 +135,10 @@ const columns = [{
   title: '启用状态',
   dataIndex: 'status',
 }];
-const data = ref([])
+const roleList = ref([])
 const getRoleList = async () => {
-  data.value = await getRoleListData()
+  const { data } = await getRoleListData()
+  roleList.value = data
 }
 
 const currentPage = ref(1)
