@@ -2,7 +2,7 @@
  * @Author: error: git config user.name && git config user.email & please set dead value or install git
  * @Date: 2022-06-09 18:08:47
  * @LastEditors: error: git config user.name && git config user.email & please set dead value or install git
- * @LastEditTime: 2022-08-26 16:20:27
+ * @LastEditTime: 2022-08-29 15:49:31
  * @FilePath: \basic\src\router\index.js
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
  */
@@ -156,11 +156,6 @@ export const privateRoutes = [
  * 公开路由表
  */
 export const publicRoutes = [
-  {
-    path: '/g6',
-    component: () =>
-      import('../views/g6/index.vue')
-  },
   {
     path: '/login',
     name: 'login',

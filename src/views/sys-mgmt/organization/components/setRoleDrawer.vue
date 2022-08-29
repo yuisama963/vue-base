@@ -1,28 +1,36 @@
 <!--
  * @Author: error: git config user.name && git config user.email & please set dead value or install git
- * @Date: 2022-08-26 13:48:32
+ * @Date: 2022-08-29 17:42:06
  * @LastEditors: error: git config user.name && git config user.email & please set dead value or install git
- * @LastEditTime: 2022-08-29 11:01:03
- * @FilePath: \basic\src\views\sys-mgmt\organization\components\setRoleDialog.vue
+ * @LastEditTime: 2022-08-29 20:59:56
+ * @FilePath: \basic\src\views\sys-mgmt\organization\components\setRoleDrawer.vue
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
 -->
 <template>
-  <a-modal
+  <a-drawer
     v-model:visible="visible"
-    :width="520"
-    title="角色配置"
+    class="auto-width-drawer"
+    placement="right"
   >
-    <set-role :roleList="roleList" :selectedRoleList="selectedRoleList" @onReload="getAllRoleList" @onCloseDialog="toggleDialog(false)"></set-role>
-    <template #footer>
-      <a-button type="primary" @click="onConfirm">确认修改</a-button>
+    <template #title>
+      <a-row justify="start">
+        <span>角色配置</span>
+        <a-button type="primary" @click="onConfirm">提交修改</a-button>
+      </a-row>
     </template>
-  </a-modal>
+    <set-role :roleList="roleList" :selectedRoleList="selectedRoleList" @onReload="getAllRoleList" @onCloseDialog="toggleDialog(false)"></set-role>
+  </a-drawer>
 </template>
 
 <script setup>
 import { ref, onMounted, onUpdated, computed } from 'vue'
-import useDialog from '@/hooks/useDialog'
 import useGetAllRoleList from '@/hooks/useGetAllRoleList'
+import useDrawer from '@/hooks/useDrawer'
+
+const { visible, toggleDrawer } = useDrawer()
+defineExpose({
+	toggleDrawer
+})
 
 const props = defineProps({
   memberInfo: {
@@ -35,21 +43,11 @@ onUpdated(() => {
 })
 
 const selectedRoleList = computed(() => props.memberInfo.role)
-// const roleList = ref([])
-// const getAllRoleList = async () => {
-//   const { data } = await getRoleListData()
-//   roleList.value = data
-// }
 
-const { visible, toggleDialog } = useDialog()
-defineExpose({
-	toggleDialog
-})
 
 const onConfirm = () => {
   
 }
 </script>
 
-<style lang="scss" scoped>
-</style>
+<style lang="scss" scoped></style>

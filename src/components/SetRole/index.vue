@@ -2,7 +2,7 @@
  * @Author: error: git config user.name && git config user.email & please set dead value or install git
  * @Date: 2022-08-25 10:46:15
  * @LastEditors: error: git config user.name && git config user.email & please set dead value or install git
- * @LastEditTime: 2022-08-26 20:02:09
+ * @LastEditTime: 2022-08-29 14:01:40
  * @FilePath: \basic\src\components\SetRole\index.vue
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
 -->
@@ -35,18 +35,15 @@
         v-for="(role, index) in selectedRoleList"
         :color="Tags_Subject_Colors[index]"
         closable
-        @close.prevent="handleClose(role)"
+        @close.prevent="removeSelected(role)"
         class="role-tag"
       >
         {{role}}
       </a-tag>
     </div>
     <section class="role-list-outer">
-      <div class="role-list-inner">
-        <a-row justify="space-between" v-for="role in roleList" class="role-item margin-bottom-8">
-          <span class="role-name">{{ role.name }}</span>
-          <a-button type="link" @click.prevent="go">角色详情</a-button>
-        </a-row>
+      <div class="role-list-inner">       
+        <role-item v-for="role in roleList" :role="role" @onCloseDialog="onCloseDialog" :isActive="isActive(role)"></role-item>
       </div>
     </section>
   </div>
@@ -56,6 +53,7 @@
 import { ReloadOutlined, PlusOutlined } from '@ant-design/icons-vue'
 import { ref, watch } from "vue"
 import { Tags_Subject_Colors } from '@/constant'
+import RoleItem from './roleItem.vue'
 
 const props = defineProps({
   roleList: {
@@ -65,20 +63,37 @@ const props = defineProps({
     type: Array
   }
 })
-
-const go = () => {
-  
-}
+// 当前
+const selected = ref([])
 
 const searchRes = ref('')
 const onSearchRole = () => {
 
 }
 
-const emits = defineEmits(['onReload'])
-
+const emits = defineEmits(['onReload', 'onCloseDialog'])
+//刷新角色列表
 const onReload = () => {
   emits('onReload')
+}
+const onCloseDialog = () => {
+  emits('onCloseDialog')
+}
+
+/**
+ * 角色是否被选中
+ */
+const isActive = tag => {
+  console.log(props.selectedRoleList.findIndex((role) => {
+    console.log(role, tag)
+    return role === tag
+    }))
+  return props.selectedRoleList.findIndex(role => role === tag.name) > -1 ? true : false
+}
+
+
+const removeSelected = tag => {
+  selected.value = props.selectedRoleList.filter(role => role !== tag )
 }
 </script>
 
@@ -89,16 +104,7 @@ const onReload = () => {
 .selected-role-area {
   margin-top: 16px;
 }
-.role-item {
-  height: 48px;
-  border: 1px solid $colorNeutral5;
-  align-items: center;
-  padding: 0 16px;
-  .role-name {
-    color: #000000;
-    font-size: 14px;
-  }
-}
+
 .role-list-outer {
   height: 410px;
   position: relative;

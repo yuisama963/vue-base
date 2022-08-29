@@ -2,7 +2,7 @@
  * @Author: error: git config user.name && git config user.email & please set dead value or install git
  * @Date: 2022-08-03 18:11:25
  * @LastEditors: error: git config user.name && git config user.email & please set dead value or install git
- * @LastEditTime: 2022-08-26 19:52:16
+ * @LastEditTime: 2022-08-29 21:15:14
  * @FilePath: \basic\src\views\sys-mgmt\organization\index.vue
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
 -->
@@ -34,12 +34,17 @@
     @onOpenAddMemberDialog="onOpenAddMemberDialog"
     @onOpenSetRoleDialog="onOpenSetRoleDialog">
   </node-mgmt-dialog>
+  <node-mgmt-drawer
+    ref="nodeMgmtDrawerRef"
+    :selectedNode="selectedNode"
+  >
+  </node-mgmt-drawer>
   <!-- 新增节点弹窗 -->
-  <add-node-dialog ref="addNodeDialogRef" @onAddNode="onAddNode"></add-node-dialog>
+  <!-- <add-node-dialog ref="addNodeDialogRef" @onAddNode="onAddNode"></add-node-dialog> -->
   <!-- 添加成员弹窗 -->
-  <add-member-dialog ref="addMemberDialogRef" @onAddNode=""></add-member-dialog>
+  <!-- <add-member-dialog ref="addMemberDialogRef" @onAddNode=""></add-member-dialog> -->
   <!-- 角色配置弹窗 -->
-  <set-role-dialog ref="setRoleDialogRef" @onSetRole="" :memberInfo="memberInfo"></set-role-dialog>
+  <!-- <set-role-dialog ref="setRoleDialogRef" @onSetRole="" :memberInfo="memberInfo"></set-role-dialog> -->
 </div>
  
 </template>
@@ -51,15 +56,17 @@ import { ref, watch, onMounted } from 'vue'
 import { Tree_Graph_Subject_Colors } from '@/constant'
 import legendItem from './components/legendItem.vue'
 import addNodeDialog from './components/addNodeDialog.vue'
-import nodeMgmtDialog from './components/nodeMgmtDialog.vue'
-import addMemberDialog from './components/addMemberDialog.vue'
-import setRoleDialog from './components/setRoleDialog.vue'
+//import nodeMgmtDialog from './components/nodeMgmtDialog.vue'
+import nodeMgmtDrawer from './components/nodeMgmtDrawer.vue'
+//import addMemberDialog from './components/addMemberDialog.vue'
+//import setRoleDialog from './components/setRoleDialog.vue'
 
 // 选择的节点
 const selectedNode = ref(null)
 let maxDepth = ref(0)
 //节点管理弹窗
 const nodeMgmtDialogRef = ref(null)
+const nodeMgmtDrawerRef = ref(null)
 const addNodeDialogRef = ref(null)
 const addMemberDialogRef = ref(null)
 // g6工具库
@@ -411,7 +418,8 @@ const g6 = (data) => {
     
     selectedNode.value = {name: node.getModel().name, id: node.getModel().id}
     console.log(node.getModel().id)
-    nodeMgmtDialogRef.value.toggleDialog(true)
+    //nodeMgmtDialogRef.value.toggleDialog(true)
+    nodeMgmtDrawerRef.value.toggleDrawer(true)
   });
 }
 
