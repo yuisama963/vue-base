@@ -2,7 +2,7 @@
  * @Author: error: git config user.name && git config user.email & please set dead value or install git
  * @Date: 2022-08-25 10:46:15
  * @LastEditors: error: git config user.name && git config user.email & please set dead value or install git
- * @LastEditTime: 2022-08-29 14:01:40
+ * @LastEditTime: 2022-08-30 18:21:26
  * @FilePath: \basic\src\components\SetRole\index.vue
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
 -->
@@ -99,22 +99,23 @@ const removeSelected = tag => {
 
 <style lang="scss" scoped>
 .search-role-input {
-  width: 323px;
+  width: 332px;
 }
 .selected-role-area {
   margin-top: 16px;
 }
 
 .role-list-outer {
-  height: 410px;
+  height: calc(100vh - 264px);
   position: relative;
   overflow: hidden;
   //width: 423px;
   width: 100%;
+  min-width: 432px;
   .role-list-inner {
     //width: 423px;
     width: 100%;
-    height: 410px;
+    height: calc(100vh - 264px);
     position: absolute;
     left: 0;
     overflow-x: hidden;

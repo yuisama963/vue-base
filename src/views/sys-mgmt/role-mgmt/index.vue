@@ -2,7 +2,7 @@
  * @Author: error: git config user.name && git config user.email & please set dead value or install git
  * @Date: 2022-08-03 17:52:39
  * @LastEditors: error: git config user.name && git config user.email & please set dead value or install git
- * @LastEditTime: 2022-08-26 19:31:27
+ * @LastEditTime: 2022-08-30 18:09:07
  * @FilePath: \basic\src\views\sys-mgmt\role-mgmt\index.vue
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
 -->
@@ -42,7 +42,7 @@
             <a-button type="link">{{record.name}}</a-button>
         </template>
         <template v-else-if="column.dataIndex === 'status'">
-            <a-switch v-model:checked="record.status" @change="onChangeStatus" @click="onClick"/>
+            <a-switch v-model:checked="record.status" @change="onChangeStatus" />
         </template>
       </template>
     </a-table>
@@ -51,11 +51,12 @@
         <a-button class="margin-right-8">
           <template #icon><export-outlined /></template>
           导出</a-button>
-        <a-button>创建角色</a-button>
+        <a-button><router-link to="/create-role">创建角色</router-link></a-button>
       </a-row>
       <a-row>
         <a-pagination
           v-model:current="currentPage"
+          :pageSize="10"
           :total="85"
           :show-total="total => `共 ${total} 条`"
           @change="onChange"
@@ -115,6 +116,9 @@ const columns = [{
 }, {
   title: '创建时间',
   dataIndex: 'createTime',
+  sorter: {
+    compare: (a, b) => a.createTime - b.createTime,
+  }
 }, {
   title: '创建人',
   dataIndex: 'creator',
@@ -122,6 +126,9 @@ const columns = [{
 }, {
   title: '最后编辑时间',
   dataIndex: 'lastUpdateTime',
+  sorter: {
+    compare: (a, b) => a.lastUpdateTime - b.lastUpdateTime,
+  }
 }, {
   title: '最后编辑人',
   dataIndex: 'lastEditor',

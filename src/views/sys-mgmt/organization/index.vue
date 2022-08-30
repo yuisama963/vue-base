@@ -2,13 +2,13 @@
  * @Author: error: git config user.name && git config user.email & please set dead value or install git
  * @Date: 2022-08-03 18:11:25
  * @LastEditors: error: git config user.name && git config user.email & please set dead value or install git
- * @LastEditTime: 2022-08-29 21:15:14
+ * @LastEditTime: 2022-08-30 16:40:01
  * @FilePath: \basic\src\views\sys-mgmt\organization\index.vue
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
 -->
 <template>
 <div>
-  <a-row justify="space-between">
+  <a-row justify="space-between" align="middle">
     <a-input-search
       v-model:value="searchRes"
       placeholder="请输入节点名称"
@@ -26,49 +26,39 @@
         :depth="index"></legend-item>
     </a-row>
   </a-row>
-  <div id="mountNode"></div>
-  <!-- 节点管理弹窗 -->
-  <node-mgmt-dialog
-    ref="nodeMgmtDialogRef"
-    :selectedNode="selectedNode"
-    @onOpenAddMemberDialog="onOpenAddMemberDialog"
-    @onOpenSetRoleDialog="onOpenSetRoleDialog">
-  </node-mgmt-dialog>
+  <div id="mountNode" ref="container"></div>
+  <!-- 节点管理抽屉 -->
   <node-mgmt-drawer
     ref="nodeMgmtDrawerRef"
     :selectedNode="selectedNode"
   >
   </node-mgmt-drawer>
   <!-- 新增节点弹窗 -->
-  <!-- <add-node-dialog ref="addNodeDialogRef" @onAddNode="onAddNode"></add-node-dialog> -->
-  <!-- 添加成员弹窗 -->
-  <!-- <add-member-dialog ref="addMemberDialogRef" @onAddNode=""></add-member-dialog> -->
-  <!-- 角色配置弹窗 -->
-  <!-- <set-role-dialog ref="setRoleDialogRef" @onSetRole="" :memberInfo="memberInfo"></set-role-dialog> -->
+  <add-node-dialog ref="addNodeDialogRef" @onAddNode="onAddNode"></add-node-dialog>
 </div>
  
 </template>
 
 <script setup>
 import G6 from '@antv/g6'
-import { getOrganizationData, createNode } from '@/api/sys'
-import { ref, watch, onMounted } from 'vue'
+import { getOrganizationData, getOrganizationData2, createNode } from '@/api/sys'
+import { ref, watch, onMounted, createVNode } from 'vue'
 import { Tree_Graph_Subject_Colors } from '@/constant'
 import legendItem from './components/legendItem.vue'
 import addNodeDialog from './components/addNodeDialog.vue'
-//import nodeMgmtDialog from './components/nodeMgmtDialog.vue'
 import nodeMgmtDrawer from './components/nodeMgmtDrawer.vue'
-//import addMemberDialog from './components/addMemberDialog.vue'
-//import setRoleDialog from './components/setRoleDialog.vue'
+import { Modal } from 'ant-design-vue';
+import { ExclamationCircleOutlined } from '@ant-design/icons-vue';
 
 // 选择的节点
 const selectedNode = ref(null)
 let maxDepth = ref(0)
-//节点管理弹窗
-const nodeMgmtDialogRef = ref(null)
+//节点管理抽屉
 const nodeMgmtDrawerRef = ref(null)
+//新增节点弹窗
 const addNodeDialogRef = ref(null)
-const addMemberDialogRef = ref(null)
+const container = ref(null);
+console.log(container)
 // g6工具库
 const Util = G6.Util
 
@@ -167,13 +157,10 @@ G6.registerNode(
   },
   'circle',
 );
-
+// 组织架构节点数据
 let treeData = ref({})
-
 let treeGraph = null
-// 搜索框数据
-const searchRes = ref('')
-const searchNodeInputLoading = ref(false)
+
 onMounted(async () => {
   await getOrganization()
   G6.Util.traverseTree(treeData.value, (node) => {
@@ -183,7 +170,9 @@ onMounted(async () => {
   g6(treeData.value)
 })
 
-
+// 搜索框数据
+const searchRes = ref('')
+const searchNodeInputLoading = ref(false)
 const onSearch = () => {
   //searchRes.value = '技术'
   //搜索到该节点
@@ -249,12 +238,11 @@ const defineColor = () => {
   return colorSets
 }
 
-
 const g6 = (data) => {
   const colorSets = defineColor()
   //console.log(data)
-  const container = document.getElementById('mountNode');
-  const width = container.clientWidth;
+  console.log(container)
+  const width = container.value.clientWidth;
   const height = document.body.clientHeight - 260;
   //右键菜单
   const contextMenu = new G6.Menu({
@@ -285,6 +273,7 @@ const g6 = (data) => {
           addNodeDialogRef.value.toggleDialog(true)
           break
         case 'del-node':
+          handleDeleteNode(item)
           break
         case 'collapse-node':
           treeGraph.updateItem(item, {collapsed: true})
@@ -376,6 +365,7 @@ const g6 = (data) => {
       style: {
         fill: color.mainFill,
         stroke: color.mainStroke,
+        cursor: 'pointer'
       },
       stateStyles: {
         active: {
@@ -429,6 +419,11 @@ const getOrganization = async () => {
   treeData.value = data
   //g6(data.value)
 }
+const getOrganization2 = async () => {
+  const { data } = await getOrganizationData2()
+  treeData.value = data
+  //g6(data.value)
+}
 //快速折叠
 const fastCollapseExpand = ( data ) => {
   G6.Util.traverseTree(treeData.value, (node) => {
@@ -446,47 +441,62 @@ const fastCollapseExpand = ( data ) => {
   // 同时操作多个节点 所有节点状态修改完毕后再重绘,不然展开后位置重叠
   treeGraph.layout()
 }
-//打开添加成员弹窗
-const onOpenAddMemberDialog = () => {
-  addMemberDialogRef.value.toggleDialog(true)
-}
-//打开配置角色弹窗
-const memberInfo = ref({})
-const setRoleDialogRef = ref(null)
-const onOpenSetRoleDialog = (data) => {
-  memberInfo.value = data.info
-  setRoleDialogRef.value.toggleDialog(true)
-}
+
 //新增节点弹窗
 const onAddNode = async (data) => {
   const { success } = await createNode(data)
   if( success ) {
-    addNodeDialogRef.value.closeLoading()
     addNodeDialogRef.value.toggleDialog(false)
+    await getOrganization2()
+    console.log(treeData.value)
+    treeGraph.changeData(treeData.value);
+    treeGraph.fitView();
   }
 }
+
+const handleDeleteNode = async (data) => {
+  Modal.confirm({
+        title: '删除此节点会同时删除其下的所有节点，是否继续?',
+        icon: createVNode(ExclamationCircleOutlined),
+        content: '',
+        onOk() {
+          console.log('OK');
+        },
+
+        onCancel() {
+          console.log('Cancel');
+        },
+
+        class: 'test',
+      });
+}
+
+// 适配屏幕宽度
+if (typeof window !== 'undefined')
+    window.onresize = () => {
+        if (!treeGraph || treeGraph.get('destroyed')) return;
+        if (!container || !container.scrollWidth || !container.scrollHeight) return;
+        treeGraph.changeSize(container.scrollWidth, container.scrollHeight);
+    };
 </script>
 
 <style lang="scss" scoped>
 #mountNode {
   position: relative;
   width: 100%;
-  min-height: calc(100vh - 64px);
+  min-height: calc(100vh - 212px);
   .minimap {
     border: 1px solid #e2e2e2;
   }
 }
-:v-deep(.g6-minimap-container) {
-  border: 1px solid #e2e2e2;
-}
-:v-deep(.g6-minimap-viewport) {
-  border: 2px solid rgb(25, 128, 255);
-}
-.minimap {
+.g6-minimap-container {
   border: 1px solid #e2e2e2;
 }
 .g6-minimap-viewport {
   border: 2px solid rgb(25, 128, 255);
+}
+.minimap {
+  border: 1px solid #e2e2e2;
 }
 .search-node-input {
   width: 200px;
