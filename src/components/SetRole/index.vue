@@ -2,7 +2,7 @@
  * @Author: error: git config user.name && git config user.email & please set dead value or install git
  * @Date: 2022-08-25 10:46:15
  * @LastEditors: error: git config user.name && git config user.email & please set dead value or install git
- * @LastEditTime: 2022-08-31 20:18:09
+ * @LastEditTime: 2022-08-31 20:41:30
  * @FilePath: \basic\src\components\SetRole\index.vue
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
 -->
@@ -43,7 +43,8 @@
     </div>
     <section class="role-list-outer">
       <div class="role-list-inner">       
-        <role-item v-for="role in roleList" :role="role" @onEditRole="onEditRole" :isActive="isActive(role)"></role-item>
+        <role-item v-for="role in roleList" :role="role" @onEditRole="onEditRole" :isActive="isActive(role)"
+          @click="selectRole(role)"></role-item>
       </div>
     </section>
   </div>
@@ -55,6 +56,7 @@ import { ref, watch } from "vue"
 import { Tags_Subject_Colors } from '@/constant'
 import RoleItem from './roleItem.vue'
 import { useRoute, useRouter } from 'vue-router'
+import { deepClone } from '@/utils/util'
 
 const props = defineProps({
   roleList: {
@@ -71,7 +73,7 @@ const selected = ref([])
 watch(
   props.selectedRoleList,
   (newValue, oldValue) => {
-    selected.value = newValue
+    selected.value = deepClone(newValue)
   },
   {
     immediate: true
@@ -81,6 +83,15 @@ watch(
 const searchRes = ref('')
 const onSearchRole = () => {
 
+}
+
+const selectRole = (role) => {
+  const ind = selected.value.findIndex(item => item == role.name )
+  if ( ind > -1) {
+    selected.value.splice(ind, 1)
+  } else {
+    selected.value.push(role)
+  }
 }
 
 const emits = defineEmits(['onReload', 'onCloseAllDrawer'])
@@ -103,7 +114,7 @@ const onEditRole = () => {
  * 角色是否被选中
  */
 const isActive = tag => {
-  return props.selectedRoleList.findIndex(role => role === tag.name) > -1 ? true : false
+  return selected.value.findIndex(role => role === tag.name) > -1 ? true : false
 }
 
 
