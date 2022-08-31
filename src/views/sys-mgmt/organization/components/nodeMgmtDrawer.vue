@@ -2,7 +2,7 @@
  * @Author: error: git config user.name && git config user.email & please set dead value or install git
  * @Date: 2022-08-29 15:00:02
  * @LastEditors: error: git config user.name && git config user.email & please set dead value or install git
- * @LastEditTime: 2022-08-30 10:56:17
+ * @LastEditTime: 2022-08-31 20:07:55
  * @FilePath: \basic\src\views\sys-mgmt\organization\components\nodeMgmtDrawer.vue
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
 -->
@@ -32,7 +32,7 @@
           :loading="searchMemberLoading"
         />
         <a-row>
-          <a-button type="primary" class="margin-right-8">查询</a-button>
+          <a-button type="primary" class="mr8">查询</a-button>
           <a-button>重置</a-button>
         </a-row>
       </a-row>
@@ -73,7 +73,7 @@
       </a-row>
     </template>
     <add-member-drawer ref="addMemberDrawerRef" />
-    <set-role-drawer ref="setRoleDrawerRef" :memberInfo="memberInfo"/>
+    <set-role-drawer ref="setRoleDrawerRef" :memberInfo="memberInfo" @onCloseAllDrawer="onCloseAllDrawer"/>
   </a-drawer>
 </template>
 
@@ -85,7 +85,9 @@ import { Tags_Subject_Colors } from '@/constant'
 import useDrawer from '@/hooks/useDrawer'
 import addMemberDrawer from './addMemberDrawer.vue'
 import setRoleDrawer from './setRoleDrawer.vue'
+import { useRoute, useRouter } from 'vue-router'
 
+const router = useRouter()
 const addMemberDrawerRef = ref(null)
 const setRoleDrawerRef = ref(null)
 
@@ -151,6 +153,10 @@ const onSearch = () => {
 const onBlur = () => {
   console.log('blur')
   editState.value = false
+}
+
+const onCloseAllDrawer = () => {
+  toggleDrawer(false)
 }
 
 const { visible, toggleDrawer } = useDrawer()

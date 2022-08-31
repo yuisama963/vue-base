@@ -2,19 +2,18 @@
  * @Author: error: git config user.name && git config user.email & please set dead value or install git
  * @Date: 2022-08-26 20:09:26
  * @LastEditors: error: git config user.name && git config user.email & please set dead value or install git
- * @LastEditTime: 2022-08-29 11:35:30
+ * @LastEditTime: 2022-08-31 20:05:05
  * @FilePath: \basic\src\components\SetRole\roleItem.vue
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
 -->
 <template>
-  <a-row justify="space-between" class="role-item margin-bottom-8" :class="{active: isActive}">
+  <a-row justify="space-between" class="role-item mb8" :class="{active: isActive}">
     <span class="role-name">{{ role.name }}</span>
     <a-button type="link" @click.prevent="go">角色详情</a-button>
   </a-row>
 </template>
 
 <script setup>
-import { useRoute, useRouter } from 'vue-router'
 const props = defineProps({
   role: {
     type: Object
@@ -24,11 +23,9 @@ const props = defineProps({
   }
 })
 
-const router = useRouter()
-const emits = defineEmits(['onCloseDialog'])
+const emits = defineEmits(['onEditRole'])
 const go = () => {
-  emits('onCloseDialog')
-  router.push('/edit-role')
+  emits('onEditRole')
 }
 </script>
 

@@ -2,7 +2,7 @@
  * @Author: error: git config user.name && git config user.email & please set dead value or install git
  * @Date: 2022-08-03 17:52:39
  * @LastEditors: error: git config user.name && git config user.email & please set dead value or install git
- * @LastEditTime: 2022-08-30 18:09:07
+ * @LastEditTime: 2022-08-31 14:20:44
  * @FilePath: \basic\src\views\sys-mgmt\role-mgmt\index.vue
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
 -->
@@ -14,7 +14,7 @@
           v-model:value="searchRes"
           placeholder="多项内容用空格隔开"
           @search="onSearch"
-          class="search-role-input margin-right-24"
+          class="search-role-input mr24"
         >
           <template #prefix>
             <search-outlined />
@@ -32,7 +32,7 @@
       </a-row>
         
       <a-row>
-        <a-button class="margin-right-8" type="primary">查询</a-button>
+        <a-button class="mr8" type="primary">查询</a-button>
         <a-button>重置</a-button>
       </a-row>
     </a-row>
@@ -48,7 +48,7 @@
     </a-table>
     <a-row justify="space-between" class="pagination-wrapper">
       <a-row>
-        <a-button class="margin-right-8">
+        <a-button class="mr8">
           <template #icon><export-outlined /></template>
           导出</a-button>
         <a-button><router-link to="/create-role">创建角色</router-link></a-button>
@@ -62,7 +62,7 @@
           @change="onChange"
           :showSizeChanger="false"
         />
-        <a-button class="margin-left-16">
+        <a-button class="ml16">
           <template #icon><setting-outlined /></template>
           设置</a-button>
       </a-row>

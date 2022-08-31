@@ -2,7 +2,7 @@
  * @Author: error: git config user.name && git config user.email & please set dead value or install git
  * @Date: 2022-08-25 10:46:15
  * @LastEditors: error: git config user.name && git config user.email & please set dead value or install git
- * @LastEditTime: 2022-08-30 18:21:26
+ * @LastEditTime: 2022-08-31 20:18:09
  * @FilePath: \basic\src\components\SetRole\index.vue
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
 -->
@@ -26,13 +26,13 @@
           <template #title>
             <span>创建角色</span>
           </template>
-          <plus-outlined class="plus-btn"/>
+          <plus-outlined class="plus-btn" @click="createRole"/>
         </a-tooltip>  
       </a-row>
     </a-row>
     <div class="selected-role-area">
       <a-tag
-        v-for="(role, index) in selectedRoleList"
+        v-for="(role, index) in selected"
         :color="Tags_Subject_Colors[index]"
         closable
         @close.prevent="removeSelected(role)"
@@ -43,7 +43,7 @@
     </div>
     <section class="role-list-outer">
       <div class="role-list-inner">       
-        <role-item v-for="role in roleList" :role="role" @onCloseDialog="onCloseDialog" :isActive="isActive(role)"></role-item>
+        <role-item v-for="role in roleList" :role="role" @onEditRole="onEditRole" :isActive="isActive(role)"></role-item>
       </div>
     </section>
   </div>
@@ -54,6 +54,7 @@ import { ReloadOutlined, PlusOutlined } from '@ant-design/icons-vue'
 import { ref, watch } from "vue"
 import { Tags_Subject_Colors } from '@/constant'
 import RoleItem from './roleItem.vue'
+import { useRoute, useRouter } from 'vue-router'
 
 const props = defineProps({
   roleList: {
@@ -63,37 +64,52 @@ const props = defineProps({
     type: Array
   }
 })
+
+
 // 当前
 const selected = ref([])
+watch(
+  props.selectedRoleList,
+  (newValue, oldValue) => {
+    selected.value = newValue
+  },
+  {
+    immediate: true
+  }
+)
 
 const searchRes = ref('')
 const onSearchRole = () => {
 
 }
 
-const emits = defineEmits(['onReload', 'onCloseDialog'])
+const emits = defineEmits(['onReload', 'onCloseAllDrawer'])
 //刷新角色列表
 const onReload = () => {
   emits('onReload')
 }
-const onCloseDialog = () => {
-  emits('onCloseDialog')
-}
 
+const router = useRouter()
+const createRole = () => {
+  router.push('/create-role')
+  emits('onCloseAllDrawer')
+}
+const onEditRole = () => {
+  router.push('/edit-role')
+  emits('onCloseAllDrawer')
+  
+}
 /**
  * 角色是否被选中
  */
 const isActive = tag => {
-  console.log(props.selectedRoleList.findIndex((role) => {
-    console.log(role, tag)
-    return role === tag
-    }))
   return props.selectedRoleList.findIndex(role => role === tag.name) > -1 ? true : false
 }
 
 
 const removeSelected = tag => {
-  selected.value = props.selectedRoleList.filter(role => role !== tag )
+  const ind = selected.value.findIndex(role => role == tag)
+  selected.value.splice(ind, 1)
 }
 </script>
 

@@ -2,7 +2,7 @@
  * @Author: error: git config user.name && git config user.email & please set dead value or install git
  * @Date: 2022-08-29 16:49:21
  * @LastEditors: error: git config user.name && git config user.email & please set dead value or install git
- * @LastEditTime: 2022-08-29 21:00:07
+ * @LastEditTime: 2022-08-31 19:54:23
  * @FilePath: \basic\src\views\sys-mgmt\organization\components\addMemberDrawer.vue
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
 -->
@@ -13,7 +13,7 @@
     placement="right"
   >
     <template #title>
-      <a-row justify="start">
+      <a-row justify="space-between">
         <p>角色配置</p>
         <a-button type="primary" @click="handleCancel">添加成员</a-button>
       </a-row>
@@ -26,13 +26,17 @@
               v-model:value="searchRes"
               placeholder="请输入成员名称"
               @search="onSearchMember"
-              class="search-member-input margin-bottom-8"
+              class="search-member-input mb8"
             />
           </a-row>
-          <div class="to-be-added-area"></div>
+          <div class="to-be-added-area">
+            {{selectedMembers}}
+          </div>
           <a-divider v-if="searchRes">搜索结果</a-divider>
           <div class="all-member-list">
-            <a-row class="member-item margin-bottom-8" v-for="member in memberList" justify="space-between">
+            <a-row class="member-item mb8" v-for="member in memberList" justify="space-between"
+              :class="{'active': isSelectedMember(member)}"
+              @click="selectMember(member)">
               
               <a-row type="flex" align="middle">
                 <span class="member-avatar">{{member.name}}</span>
@@ -50,7 +54,7 @@
           </div>
         </div>
         <div class="role-list-wrapper">
-          <set-role :roleList="roleList" :selectedRoleList="selectedRoleList" @onReload="getAllRoleList"></set-role>
+          <set-role :roleList="roleList" :selectedRoleList="selectedRoleList" @onReload="getAllRoleList" @onCreateRole="onCreateRole"></set-role>
         </div>
       </a-row>
     </section>
@@ -82,15 +86,30 @@ const getMemberList = async () => {
   const { data } = await getDingDingMemberListData()
   memberList.value = data
 }
+
+const selectedMembers = ref([])
+const selectMember = (member) => {
+  if (selectedMembers.value.findIndex(item => item.id === member.id) < 0) {
+    selectedMembers.value.push(member)
+  } else {
+    
+  }
+}
+
+const isSelectedMember = (member) => {
+  let ret = false
+  if (selectedMembers.value.length < 1) {
+    ret = false
+  } else {
+    ret = selectedMembers.value.findIndex(item => item.id === member.id) > -1 ? true : false
+  }
+  console.log(ret)
+  return ret
+}
 const selectedRoleList = ref([])
-// const roleList = ref([])
-// const getRoleList = async () => {
-//   const { data } = await getRoleListData()
-//   roleList.value = data
-// }
+
 const searchRes = ref('')
 const onSearchMember = () => {
-
 }
 
 const onSearchRole = () => {
@@ -100,18 +119,23 @@ const onSearchRole = () => {
 
 <style lang="scss" scoped>
 .add-member-wrapper {
-  height: 480px;
   overflow: hidden;
   .member-list-wrapper {
+    width: 480px;
+    margin-right: 48px;
     .search-member-input {
-      width: 520px;
+      width: 480px;
     }
     .all-member-list {
+      
       .member-item {
         height: 64px;
         border: 1px solid $colorNeutral5;
         align-items: center;
         padding: 0 16px;
+        &.active {
+          border: 2px solid $themeColor;
+        }
         .member-avatar {
           width: 40px;
           height: 40px;
@@ -132,7 +156,7 @@ const onSearchRole = () => {
     }
   }
   .role-list-wrapper {
-    width: 423px;
+    width: 432px;
   }
 }
 </style>
