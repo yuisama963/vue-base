@@ -2,7 +2,7 @@
  * @Author: error: git config user.name && git config user.email & please set dead value or install git
  * @Date: 2022-08-03 18:11:25
  * @LastEditors: error: git config user.name && git config user.email & please set dead value or install git
- * @LastEditTime: 2022-08-30 16:40:01
+ * @LastEditTime: 2022-09-01 17:04:26
  * @FilePath: \basic\src\views\sys-mgmt\organization\index.vue
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
 -->
@@ -48,7 +48,7 @@ import legendItem from './components/legendItem.vue'
 import addNodeDialog from './components/addNodeDialog.vue'
 import nodeMgmtDrawer from './components/nodeMgmtDrawer.vue'
 import { Modal } from 'ant-design-vue';
-import { ExclamationCircleOutlined } from '@ant-design/icons-vue';
+import { ExclamationCircleOutlined } from '@ant-design/icons-vue'
 
 // 选择的节点
 const selectedNode = ref(null)
@@ -456,19 +456,19 @@ const onAddNode = async (data) => {
 
 const handleDeleteNode = async (data) => {
   Modal.confirm({
-        title: '删除此节点会同时删除其下的所有节点，是否继续?',
-        icon: createVNode(ExclamationCircleOutlined),
-        content: '',
-        onOk() {
-          console.log('OK');
-        },
+    title: '删除此节点会同时删除其下的所有节点，是否继续?',
+    icon: createVNode(ExclamationCircleOutlined),
+    content: '',
+    okText: '确认',
+    cancelText: '取消',
+    onOk() {
+      console.log('OK');
+    },
 
-        onCancel() {
-          console.log('Cancel');
-        },
-
-        class: 'test',
-      });
+    onCancel() {
+      console.log('Cancel');
+    }
+  });
 }
 
 // 适配屏幕宽度

@@ -2,7 +2,7 @@
  * @Author: error: git config user.name && git config user.email & please set dead value or install git
  * @Date: 2022-08-29 16:49:21
  * @LastEditors: error: git config user.name && git config user.email & please set dead value or install git
- * @LastEditTime: 2022-08-31 20:43:38
+ * @LastEditTime: 2022-09-01 15:00:51
  * @FilePath: \basic\src\views\sys-mgmt\organization\components\addMemberDrawer.vue
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
 -->
@@ -13,7 +13,7 @@
     placement="right"
   >
     <template #title>
-      <a-row justify="space-between">
+      <a-row justify="space-between" align="middle">
         <p>角色配置</p>
         <a-button type="primary" @click="handleCancel">添加成员</a-button>
       </a-row>

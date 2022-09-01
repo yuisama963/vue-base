@@ -2,7 +2,7 @@
  * @Author: error: git config user.name && git config user.email & please set dead value or install git
  * @Date: 2022-06-09 18:08:47
  * @LastEditors: error: git config user.name && git config user.email & please set dead value or install git
- * @LastEditTime: 2022-08-29 15:49:31
+ * @LastEditTime: 2022-09-01 19:06:56
  * @FilePath: \basic\src\router\index.js
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
  */
@@ -18,68 +18,6 @@ import store from '@/store'
  * 私有路由表
  */
 export const privateRoutes = [
-  // {
-  //   path: '/user-ctr',
-  //   component: layout,
-  //   name: 'userCtr',
-  //   meta: {
-  //     title: '用户中心',
-  //     id: 'userCtr'
-  //   },
-  //   children: [
-  //     {
-  //       path: '/shipper-mgmt',
-  //       component: () => 
-  //         import('@/views/user-ctr/shipper-mgmt/index.vue'),
-  //       meta: {
-  //         title: '托运方管理',
-  //         icon: 'personnel-manage',
-  //         id: 'shipperMgmt'
-  //       }
-  //     },
-  //     {
-  //       path: '/carrier-mgmt',
-  //       component: () => 
-  //         import('@/views/user-ctr/carrier-mgmt/index.vue'),
-  //       meta: {
-  //         title: '承运方管理',
-  //         icon: 'personnel-manage',
-  //         id: 'carrierMgmt'
-  //       }
-  //     },
-  //   ]
-  // },
-  // {
-  //   path: '/sys-mgmt',
-  //   component: layout,
-  //   name: 'sysMgmt',
-  //   meta: {
-  //     title: '系统管理',
-  //     id: 'sysMgmt'
-  //   },
-  //   children: [
-  //     {
-  //       path: '/organization',
-  //       component: () => 
-  //         import('@/views/sys-mgmt/organization/index.vue'),
-  //       meta: {
-  //         title: '组织架构',
-  //         icon: 'personnel-manage',
-  //         id: 'organization'
-  //       }
-  //     },
-  //     {
-  //       path: '/role-mgmt',
-  //       component: () => 
-  //         import('@/views/sys-mgmt/role-mgmt/index.vue'),
-  //       meta: {
-  //         title: '角色管理',
-  //         icon: 'personnel-manage',
-  //         id: 'roleMgmt'
-  //       }
-  //     }
-  //   ]
-  // }
   {
     path: 'dashboard',
     name: 'dashboard',
@@ -90,15 +28,15 @@ export const privateRoutes = [
       id: 'dashboard'
     }
   },
-  {
-    path: 'user-ctr',
-    component: layout,
-    name: 'userCtr',
-    meta: {
-      title: '用户中心',
-      id: 'userCtr'
-    }
-  },
+  // {
+  //   path: 'user-ctr',
+  //   component: layout,
+  //   name: 'userCtr',
+  //   meta: {
+  //     title: '用户中心',
+  //     id: 'userCtr'
+  //   }
+  // },
   {
     path: 'owner-mgmt',
     component: () => 
@@ -120,15 +58,15 @@ export const privateRoutes = [
       id: 'driverMgmt'
     }
   },
-  {
-    path: 'sys-mgmt',
-    component: layout,
-    name: 'sysMgmt',
-    meta: {
-      title: '系统管理',
-      id: 'sysMgmt'
-    },
-  },
+  // {
+  //   path: 'sys-mgmt',
+  //   component: layout,
+  //   name: 'sysMgmt',
+  //   meta: {
+  //     title: '系统管理',
+  //     id: 'sysMgmt'
+  //   },
+  // },
   {
     path: 'organization',
     component: () => 
@@ -161,6 +99,11 @@ export const publicRoutes = [
     name: 'login',
     component: () =>
       import('../views/login/index.vue')
+  },{
+    path: '/ding-login',
+    name: 'dingLogin',
+    component: () =>
+      import('../views/login/dingLogin.vue')
   },{
     path: '/',
     component: layout,

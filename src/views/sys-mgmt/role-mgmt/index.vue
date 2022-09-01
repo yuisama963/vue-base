@@ -2,12 +2,13 @@
  * @Author: error: git config user.name && git config user.email & please set dead value or install git
  * @Date: 2022-08-03 17:52:39
  * @LastEditors: error: git config user.name && git config user.email & please set dead value or install git
- * @LastEditTime: 2022-08-31 14:20:44
+ * @LastEditTime: 2022-09-01 17:39:04
  * @FilePath: \basic\src\views\sys-mgmt\role-mgmt\index.vue
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
 -->
 <template>
   <div class="role-mgmt">
+    <a-button @click="reset">test</a-button>
     <a-row justify="space-between" class="tool-bar">
       <a-row>
         <a-input
@@ -33,7 +34,7 @@
         
       <a-row>
         <a-button class="mr8" type="primary">查询</a-button>
-        <a-button>重置</a-button>
+        <a-button @click="reset">重置</a-button>
       </a-row>
     </a-row>
     <a-table :columns="columns" :data-source="roleList" :pagination="false" :row-selection="rowSelection" size="middle">
@@ -43,6 +44,7 @@
         </template>
         <template v-else-if="column.dataIndex === 'status'">
             <a-switch v-model:checked="record.status" @change="onChangeStatus" />
+            <!-- <DbCheckSwitch :status="record.status"></DbCheckSwitch> -->
         </template>
       </template>
     </a-table>
@@ -77,6 +79,7 @@ import { SearchOutlined, ExportOutlined, SettingOutlined, ExclamationCircleOutli
 import { createVNode, ref, watch, onMounted } from 'vue'
 import { getRoleListData } from '@/api/sys'
 import { Modal } from 'ant-design-vue'
+// import DbCheckSwitch from '@/components/DbCheckSwitch/index.vue'
 
 onMounted(async () => {
   getRoleList()
@@ -159,35 +162,41 @@ const onChange = pageNumber => {
       console.log('Page: ', pageNumber);
     };
 
-const showConfirm = () => {
-  Modal.confirm({
-    title: '确定要停用该角色吗？',
-    icon: createVNode(ExclamationCircleOutlined),
-    okText: '停用',
-    cancelText: '取消',
-
-    onOk() {
-      console.log('OK');
-    },
-
-    onCancel() {
-      console.log('Cancel');
-    },
-
-    class: 'test',
-  });
-};
-
 const onChangeStatus = (checked, evt) => {
   console.log(checked, evt)
-  // if (checked === false) {
-  //   showConfirm()
-  // }
+  if (!checked) {
+    Modal.confirm({
+      title: '确定要停用该角色吗？',
+      icon: createVNode(ExclamationCircleOutlined),
+      okText: '停用',
+      cancelText: '取消',
+
+      onOk() {
+        console.log('OK');
+      },
+
+      onCancel() {
+        checked = true
+      }
+    });
+  }
 }
 
-const onClick = (checked, evt) => {
-  console.log(checked, evt)
-  showConfirm()
+const reset = () => {
+  Modal.confirm({
+      title: '确定要停用该角色吗？',
+      icon: createVNode(ExclamationCircleOutlined),
+      okText: '停用',
+      cancelText: '取消',
+
+      onOk() {
+        console.log('OK');
+      },
+
+      onCancel() {
+        
+      }
+    });
 }
 
 </script>

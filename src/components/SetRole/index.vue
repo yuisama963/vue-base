@@ -2,7 +2,7 @@
  * @Author: error: git config user.name && git config user.email & please set dead value or install git
  * @Date: 2022-08-25 10:46:15
  * @LastEditors: error: git config user.name && git config user.email & please set dead value or install git
- * @LastEditTime: 2022-08-31 20:41:30
+ * @LastEditTime: 2022-09-01 14:47:23
  * @FilePath: \basic\src\components\SetRole\index.vue
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
 -->
@@ -81,6 +81,7 @@ watch(
 )
 
 const searchRes = ref('')
+//前端模糊搜索角色
 const onSearchRole = () => {
 
 }
@@ -90,7 +91,7 @@ const selectRole = (role) => {
   if ( ind > -1) {
     selected.value.splice(ind, 1)
   } else {
-    selected.value.push(role)
+    selected.value.push(role.name)
   }
 }
 
@@ -122,6 +123,15 @@ const removeSelected = tag => {
   const ind = selected.value.findIndex(role => role == tag)
   selected.value.splice(ind, 1)
 }
+
+const clearData = () => {
+  selected.value = deepClone(props.selectedRoleList)
+}
+
+defineExpose({
+	clearData,
+  selected
+})
 </script>
 
 <style lang="scss" scoped>
