@@ -2,7 +2,7 @@
  * @Author: error: git config user.name && git config user.email & please set dead value or install git
  * @Date: 2022-09-02 10:50:59
  * @LastEditors: error: git config user.name && git config user.email & please set dead value or install git
- * @LastEditTime: 2022-09-02 16:44:18
+ * @LastEditTime: 2022-09-02 21:09:59
  * @FilePath: \basic\src\views\login\dingdingLogin.vue
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
 -->
@@ -16,38 +16,75 @@
     <img src="@/assets/login/unlock.png" alt="" class="logo">
     <p class="title">欢迎回来</p>
     <p class="des">已解除屏幕保护，祝你度过美好的一天</p>
+    <p>{{token}}</p>
+    <p>{{code}}</p>
   </section>
-  <!-- {{code}}
-  {{error}} -->
+  
+  <!-- {{error}} -->
+  <!-- {{window.location}} -->
 </template>
 
 <script setup>
-import { ref } from 'vue'
+import { ref, onMounted } from 'vue'
 import * as dd from 'dingtalk-jsapi'
+import { getQueryString } from '@/utils/util'
+
+const wsUrl = import.meta.env.VITE_WS_URL
+let socket = null
+socket = new WebSocket(wsUrl)
+socket.onopen = function() {
+    //alert("connected");
+    
+  }
+socket.onmessage = function(msg) {
+  alert('dd msg: ' + JSON.stringify(msg))
+}
+
+socket.onerror = function(err) {
+  alert('dd error: ' + JSON.stringify(err));
+}
+
 const corpId = import.meta.env.VITE_CORPID
 const state = ref(false)
 const code = ref(null)
 const error = ref(null)
+const token = ref(null)
 
-dd.ready(function() {
-  dd.runtime.permission.requestAuthCode({
-    corpId: corpId,
-    onSuccess(res) {
-      //alert('dd success: ' + JSON.stringify(res))
-      setTimeout(() => {
-        state.value = true
-        code.value = res.code
-      }, 1000)
-      
-    },
-    onFail(err) {
-      //alert('dd error: ' + JSON.stringify(err))
-      state.value = false
-      error.value = err
-      code.value = null
-    }
+onMounted(() => {
+  dd.ready(function() {
+    dd.runtime.permission.requestAuthCode({
+      corpId: corpId,
+      onSuccess(res) {
+        //alert(window.location.search)
+        //alert('dd success: ' + JSON.stringify(res))
+        setTimeout(() => {
+          state.value = true
+          code.value = res.code
+          token.value = getQueryString(window.location.search, 'token')
+          const data = JSON.stringify({
+            params: [
+              token.value, // 访问令牌
+              res.code, // 第三方授权码
+              1 // 平台类型
+            ],
+            jsonrpc: "2.0",
+            method: "AccessToken.Accept",
+          })
+          //alert(data)
+          socket.send(data)
+        }, 1000)
+        
+      },
+      onFail(err) {
+        //alert('dd error: ' + JSON.stringify(err))
+        state.value = false
+        error.value = err
+        code.value = null
+      }
+    })
   })
 })
+
 </script>
 
 <style lang="scss" scoped>
