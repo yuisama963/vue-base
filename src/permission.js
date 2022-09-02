@@ -2,7 +2,7 @@
  * @Author: error: git config user.name && git config user.email & please set dead value or install git
  * @Date: 2022-06-16 18:18:56
  * @LastEditors: error: git config user.name && git config user.email & please set dead value or install git
- * @LastEditTime: 2022-09-01 19:07:29
+ * @LastEditTime: 2022-09-02 10:53:09
  * @FilePath: \basic\src\permission.js
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
  */
@@ -12,7 +12,7 @@ import store from './store'
 
 
 // 白名单
-const whiteList = ['/login', '/ding-login']
+const whiteList = ['/login', '/dd-login', '/new-login']
 /**
  * 路由前置守卫
  */
