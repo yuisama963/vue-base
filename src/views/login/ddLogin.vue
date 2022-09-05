@@ -2,13 +2,11 @@
  * @Author: error: git config user.name && git config user.email & please set dead value or install git
  * @Date: 2022-09-02 10:50:59
  * @LastEditors: error: git config user.name && git config user.email & please set dead value or install git
- * @LastEditTime: 2022-09-02 21:09:59
+ * @LastEditTime: 2022-09-05 17:14:56
  * @FilePath: \basic\src\views\login\dingdingLogin.vue
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
 -->
 <template>
-  <!-- <section v-if="!state">
-  </section> -->
   <a-spin tip="Loading..." v-if="!code">
     <section class="dd-loading-container"></section>
   </a-spin>
@@ -29,25 +27,25 @@ import { ref, onMounted } from 'vue'
 import * as dd from 'dingtalk-jsapi'
 import { getQueryString } from '@/utils/util'
 
-const wsUrl = import.meta.env.VITE_WS_URL
+const wsUrl = process.env.VITE_WS_URL
 let socket = null
 socket = new WebSocket(wsUrl)
 socket.onopen = function() {
     //alert("connected");
-    
-  }
+}
 socket.onmessage = function(msg) {
-  alert('dd msg: ' + JSON.stringify(msg))
+  //alert('dd msg: ' + JSON.stringify(msg))
 }
 
 socket.onerror = function(err) {
-  alert('dd error: ' + JSON.stringify(err));
+  //alert('dd error: ' + JSON.stringify(err));
 }
-
-const corpId = import.meta.env.VITE_CORPID
-const state = ref(false)
+// 企业id
+const corpId = process.env.VITE_CORPID
+// 第三方授权码
 const code = ref(null)
 const error = ref(null)
+// 未确认的令牌
 const token = ref(null)
 
 onMounted(() => {
@@ -58,7 +56,6 @@ onMounted(() => {
         //alert(window.location.search)
         //alert('dd success: ' + JSON.stringify(res))
         setTimeout(() => {
-          state.value = true
           code.value = res.code
           token.value = getQueryString(window.location.search, 'token')
           const data = JSON.stringify({
@@ -77,7 +74,6 @@ onMounted(() => {
       },
       onFail(err) {
         //alert('dd error: ' + JSON.stringify(err))
-        state.value = false
         error.value = err
         code.value = null
       }
