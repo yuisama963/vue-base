@@ -2,7 +2,7 @@
  * @Author: error: git config user.name && git config user.email & please set dead value or install git
  * @Date: 2022-09-07 15:21:15
  * @LastEditors: error: git config user.name && git config user.email & please set dead value or install git
- * @LastEditTime: 2022-09-07 18:52:26
+ * @LastEditTime: 2022-09-07 20:13:20
  * @FilePath: \basic\src\views\user-ctr\owner-mgmt\components\registerForm.vue
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
 -->
@@ -51,7 +51,7 @@
             name="validity"
             :rules="[{ required: true, message: 'Please input your username!' }]"
           >
-            <a-range-picker v-model:value="formState.validity" value-format="YYYY-MM-DD"/>
+            <a-range-picker v-model:value="formState.validity" :placeholder="['开始日期', '结束日期']" :locale="locale"/>
           </a-form-item>
           <a-form-item
             label="企业所在地"
@@ -67,10 +67,8 @@
           >
             <a-select
       ref="select"
-      v-model:value="address"
+      v-model:value="formState.address"
       style="width: 120px"
-      @focus="focus"
-      @change="handleChange"
     >
       <a-select-option value="jack">Jack</a-select-option>
       <a-select-option value="lucy">Lucy</a-select-option>
@@ -132,6 +130,7 @@
 </template>
 
 <script setup>
+import locale from 'ant-design-vue/es/date-picker/locale/zh_CN'
 import { PlusOutlined } from '@ant-design/icons-vue'
 import { ref } from 'vue'
 const formState = ref({
