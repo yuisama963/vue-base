@@ -2,7 +2,7 @@
  * @Author: error: git config user.name && git config user.email & please set dead value or install git
  * @Date: 2022-09-02 10:50:59
  * @LastEditors: error: git config user.name && git config user.email & please set dead value or install git
- * @LastEditTime: 2022-09-06 11:37:30
+ * @LastEditTime: 2022-09-09 16:36:02
  * @FilePath: \basic\src\views\login\dingdingLogin.vue
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
 -->
@@ -33,14 +33,14 @@ const socket = inject('ws')
 // let socket = null
 // socket = new WebSocket(wsUrl)
 socket.onopen = function() {
-    alert("connected");
+    //alert("connected");
 }
 socket.onmessage = function(msg) {
   alert('dd msg: ' + JSON.stringify(msg))
 }
 
 socket.onerror = function(err) {
-  alert('dd error: ' + JSON.stringify(err));
+  //alert('dd error: ' + JSON.stringify(err));
 }
 // 企业id
 const corpId = process.env.VITE_CORPID

@@ -1,11 +1,9 @@
 <!--
  * @Author: error: git config user.name && git config user.email & please set dead value or install git
- * @Date: 2022-07-26 17:07:03
+ * @Date: 2022-09-09 11:09:27
  * @LastEditors: error: git config user.name && git config user.email & please set dead value or install git
- * @LastEditTime: 2022-07-26 17:12:10
- * @FilePath: \basic\src\views\order-mgmt\index.vue
+ * @LastEditTime: 2022-09-09 11:09:57
+ * @FilePath: \basic\src\views\business-ctr\abnl-waybill\index.vue
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
 -->
-<template>
-订单管理
-</template>
+<template></template>

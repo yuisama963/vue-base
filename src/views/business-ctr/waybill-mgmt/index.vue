@@ -1,13 +1,13 @@
 <!--
  * @Author: error: git config user.name && git config user.email & please set dead value or install git
- * @Date: 2022-08-03 17:52:39
+ * @Date: 2022-09-09 10:48:30
  * @LastEditors: error: git config user.name && git config user.email & please set dead value or install git
- * @LastEditTime: 2022-09-08 16:44:58
- * @FilePath: \basic\src\views\sys-mgmt\role-mgmt\index.vue
+ * @LastEditTime: 2022-09-09 15:02:42
+ * @FilePath: \basic\src\views\business-ctr\waybill-mgmt\index.vue
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
 -->
 <template>
-  <div class="role-mgmt">
+  <div class="waybill-mgmt">
     <a-row justify="space-between" class="tool-bar">
       <a-row>
         <a-input
@@ -39,7 +39,8 @@
         <a-button @click="reset">重置</a-button>
       </a-row>
     </a-row>
-    <a-table :columns="columns" :data-source="roleList" :pagination="false" :row-selection="rowSelection" size="middle">
+    <a-table :columns="columns" :data-source="roleList" :pagination="false" :row-selection="rowSelection" size="middle" ref="tableRef"
+    :scroll="{x: 1200}">
       <template #bodyCell="{ column, record }">
         <template v-if="column.dataIndex === 'name'">
             <a-button type="link">{{record.name}}</a-button>
@@ -116,41 +117,135 @@ const rowSelection = ref({
   },
 });
 const columns = [{
-  title: '角色名称',
-  dataIndex: 'name',
+  title: '运单号',
+  dataIndex: 'waybillNo',
+  fixed: true
 }, {
-  title: '创建时间',
-  dataIndex: 'createTime',
+  title: '运单状态',
+  dataIndex: 'waybillStatus',
   sorter: {
     compare: (a, b) => a.createTime - b.createTime,
   }
 }, {
-  title: '创建人',
+  title: '开票风险',
   dataIndex: 'creator',
   align: 'center'
 }, {
-  title: '最后编辑时间',
-  dataIndex: 'lastUpdateTime',
+  title: '创建时间',
+  dataIndex: 'createTime',
   sorter: {
     compare: (a, b) => a.lastUpdateTime - b.lastUpdateTime,
   }
 }, {
-  title: '最后编辑人',
+  title: '制单人',
   dataIndex: 'lastEditor',
 }, {
-  title: '使用人数',
+  title: '部门',
   dataIndex: 'count',
 }, {
-  title: '备注',
+  title: '客户名称',
   dataIndex: 'des',
 }, {
-  title: '启用状态',
+  title: '客户订单号',
+  dataIndex: 'status',
+},{
+  title: '承接人',
+  dataIndex: 'status',
+},{
+  title: '承接人电话',
+  dataIndex: 'status',
+},{
+  title: '司机姓名',
+  dataIndex: 'status',
+},{
+  title: '司机电话',
+  dataIndex: 'status',
+},{
+  title: '车牌号',
+  dataIndex: 'status',
+},{
+  title: '货物数量',
+  dataIndex: 'status',
+},{
+  title: '货物重量（吨）',
+  dataIndex: 'status',
+},{
+  title: '货物体积',
+  dataIndex: 'status',
+},{
+  title: '发货地',
+  dataIndex: 'status',
+},{
+  title: '收货地',
+  dataIndex: 'status',
+},{
+  title: '提货时间',
+  dataIndex: 'status',
+},{
+  title: '签收时间',
+  dataIndex: 'status',
+},{
+  title: '回单',
+  dataIndex: 'status',
+},{
+  title: '运费',
+  dataIndex: 'status',
+},{
+  title: '油卡金额',
+  dataIndex: 'status',
+},{
+  title: '预付状态',
+  dataIndex: 'status',
+},{
+  title: '预付金额',
+  dataIndex: 'status',
+},{
+  title: '到付状态',
+  dataIndex: 'status',
+},{
+  title: '到付金额',
+  dataIndex: 'status',
+},{
+  title: '尾款状态',
+  dataIndex: 'status',
+},{
+  title: '尾款金额',
+  dataIndex: 'status',
+},{
+  title: '服务费',
+  dataIndex: 'status',
+},{
+  title: '货物类型',
+  dataIndex: 'status',
+},{
+  title: '业务类型',
+  dataIndex: 'status',
+},{
+  title: '运输类型',
+  dataIndex: 'status',
+},{
+  title: '货值（万元）',
+  dataIndex: 'status',
+},{
+  title: '保障服务',
+  dataIndex: 'status',
+},{
+  title: '是否回款',
+  dataIndex: 'status',
+},{
+  title: '备注',
+  dataIndex: 'status',
+},{
+  title: '操作',
   dataIndex: 'status',
 }];
+
+const tableRef = ref(null)
 const roleList = ref([])
 const getRoleList = async () => {
-  const { data } = await getRoleListData()
-  roleList.value = data
+  // const { data } = await getRoleListData()
+  // roleList.value = data
+  console.log(tableRef.value)
 }
 
 const currentPage = ref(1)

@@ -2,7 +2,7 @@
  * @Author: error: git config user.name && git config user.email & please set dead value or install git
  * @Date: 2022-06-09 18:08:47
  * @LastEditors: error: git config user.name && git config user.email & please set dead value or install git
- * @LastEditTime: 2022-09-07 19:40:30
+ * @LastEditTime: 2022-09-09 13:56:16
  * @FilePath: \basic\src\router\index.js
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
  */
@@ -184,6 +184,26 @@ export const publicRoutes = [
         meta: {
           title: '司机管理',
           id: 'driverMgmt'
+        }
+      },
+      {
+        path: 'role-mgmt',
+        component: () => 
+          import('@/views/sys-mgmt/role-mgmt/index.vue'),
+        name: 'roleMgmt',
+        meta: {
+          title: '角色管理',
+          id: 'roleMgmt'
+        }
+      },
+      {
+        path: 'waybill-mgmt',
+        component: () => 
+          import('@/views/business-ctr/waybill-mgmt/index.vue'),
+        name: 'waybillMgmt',
+        meta: {
+          title: '运单管理',
+          id: 'waybillMgmt'
         }
       }
     ]
