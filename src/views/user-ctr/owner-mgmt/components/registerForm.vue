@@ -2,7 +2,7 @@
  * @Author: error: git config user.name && git config user.email & please set dead value or install git
  * @Date: 2022-09-07 15:21:15
  * @LastEditors: error: git config user.name && git config user.email & please set dead value or install git
- * @LastEditTime: 2022-09-07 20:13:20
+ * @LastEditTime: 2022-09-13 16:05:46
  * @FilePath: \basic\src\views\user-ctr\owner-mgmt\components\registerForm.vue
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
 -->
@@ -32,26 +32,33 @@
             name="businessLicense"
             :rules="[{ required: true, message: 'Please input your username!' }]"
           >
-            <a-upload
-              v-model:file-list="formState.businessLicense"
-              action="https://www.mocky.io/v2/5cc8019d300000980a055e76"
-              list-type="picture-card"
-              @preview="handlePreview"
-            >
-              <div>
-                <plus-outlined />
-              </div>
-            </a-upload>
-    <a-modal :visible="previewVisible" :title="previewTitle" :footer="null" @cancel="handleCancel">
-      <img alt="example" style="width: 100%" :src="previewImage" />
-    </a-modal>
+            <a-row justify="space-between">
+              <a-upload
+                v-model:file-list="formState.businessLicense"
+                action="https://www.mocky.io/v2/5cc8019d300000980a055e76"
+                list-type="picture-card"
+                @preview="handlePreview"
+              >
+                <div>
+                  <plus-outlined />
+                </div>
+              </a-upload>
+              <a-modal :visible="previewVisible" :title="previewTitle" :footer="null" @cancel="handleCancel">
+                <img alt="example" style="width: 100%" :src="previewImage" />
+              </a-modal>
+              <span>请上传清晰，端正，平整的营业执照原件或加盖公章的复印件照片。</span>
+            </a-row>
+            
           </a-form-item>
           <a-form-item
             label="营业执照有效期"
             name="validity"
             :rules="[{ required: true, message: 'Please input your username!' }]"
           >
-            <a-range-picker v-model:value="formState.validity" :placeholder="['开始日期', '结束日期']" :locale="locale"/>
+            <a-config-provider :locale="zhCN">
+              <a-range-picker v-model:value="formState.validity" :placeholder="['开始日期', '结束日期']" />
+            </a-config-provider>
+            
           </a-form-item>
           <a-form-item
             label="企业所在地"
@@ -130,7 +137,7 @@
 </template>
 
 <script setup>
-import locale from 'ant-design-vue/es/date-picker/locale/zh_CN'
+import zhCN from 'ant-design-vue/es/locale/zh_CN'
 import { PlusOutlined } from '@ant-design/icons-vue'
 import { ref } from 'vue'
 const formState = ref({
@@ -146,6 +153,14 @@ const formState = ref({
   corporateBank: '',
   corporateBankAccount: ''
 })
+const formItemLayout = {
+      labelCol: {
+        span: 6,
+      },
+      wrapperCol: {
+        span: 14,
+      },
+    };
 const labelCol = {style: {width: '150px'}}
 
 const previewVisible = ref(false);
@@ -171,5 +186,8 @@ const previewTitle = ref('');
 <style lang="scss" scoped>
 .register-form {
   width: 664px;
+}
+:v-deep(.ant-form-horizontal .ant-form-item-control) {
+  text-align: left;
 }
 </style>

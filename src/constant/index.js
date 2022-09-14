@@ -2,7 +2,7 @@
  * @Author: error: git config user.name && git config user.email & please set dead value or install git
  * @Date: 2022-06-09 11:30:13
  * @LastEditors: error: git config user.name && git config user.email & please set dead value or install git
- * @LastEditTime: 2022-08-22 17:59:04
+ * @LastEditTime: 2022-09-14 17:37:01
  * @FilePath: \basic\src\constant\index.js
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
  */
@@ -18,3 +18,5 @@ export const TAGS_VIEW = 'tagsView'
 export const Tree_Graph_Subject_Colors = ['#5B8FF9', '#F6BD16', '#5AD8A6', '#945FB9', '#E86452', '#6DC8EC', '#FF99C3', '#1E9493', '#FF9845', '#5D7092'];
 
 export const Tags_Subject_Colors = ['green', 'geekblue', 'red', 'cyan', 'orange', 'purple', 'magenta', 'blue']
+
+export const JS_API_KEY = '11ac93680b04b60935e8551a56b4c668'

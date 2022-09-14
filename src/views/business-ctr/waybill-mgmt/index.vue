@@ -2,12 +2,12 @@
  * @Author: error: git config user.name && git config user.email & please set dead value or install git
  * @Date: 2022-09-09 10:48:30
  * @LastEditors: error: git config user.name && git config user.email & please set dead value or install git
- * @LastEditTime: 2022-09-09 15:02:42
+ * @LastEditTime: 2022-09-13 15:07:46
  * @FilePath: \basic\src\views\business-ctr\waybill-mgmt\index.vue
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
 -->
 <template>
-  <div class="waybill-mgmt">
+  <div class="waybill-mgmt" ref="waybillMgmtRef">
     <a-row justify="space-between" class="tool-bar">
       <a-row>
         <a-input
@@ -40,7 +40,7 @@
       </a-row>
     </a-row>
     <a-table :columns="columns" :data-source="roleList" :pagination="false" :row-selection="rowSelection" size="middle" ref="tableRef"
-    :scroll="{x: 1200}">
+    :scroll="{x: scrollX}">
       <template #bodyCell="{ column, record }">
         <template v-if="column.dataIndex === 'name'">
             <a-button type="link">{{record.name}}</a-button>
@@ -84,8 +84,12 @@ import { getRoleListData } from '@/api/sys'
 import { Modal } from 'ant-design-vue'
 // import DbCheckSwitch from '@/components/DbCheckSwitch/index.vue'
 
+const waybillMgmtRef = ref(null)
+const scrollX = ref(0)
+
 onMounted(async () => {
   getRoleList()
+  scrollX.value = waybillMgmtRef.value.clientWidth
 })
 // 搜索框数据
 const searchRes = ref('')
@@ -116,16 +120,16 @@ const rowSelection = ref({
     console.log(selected, selectedRows, changeRows);
   },
 });
-const columns = [{
+const columns = [
+  // 1.基本信息
+{
   title: '运单号',
   dataIndex: 'waybillNo',
-  fixed: true
+  fixed: true,
+  minWidth: 100
 }, {
   title: '运单状态',
-  dataIndex: 'waybillStatus',
-  sorter: {
-    compare: (a, b) => a.createTime - b.createTime,
-  }
+  dataIndex: 'waybillStatus'
 }, {
   title: '开票风险',
   dataIndex: 'creator',
@@ -148,55 +152,87 @@ const columns = [{
 }, {
   title: '客户订单号',
   dataIndex: 'status',
-},{
+}, {
+  title: '业务类型',
+  dataIndex: 'status',
+}, {
+  title: '运输类型',
+  dataIndex: 'status',
+}, 
+//2.承接信息
+{
+  title: '承接时间',
+  dataIndex: 'status',
+}, {
   title: '承接人',
   dataIndex: 'status',
-},{
+}, {
   title: '承接人电话',
   dataIndex: 'status',
-},{
+}, {
   title: '司机姓名',
   dataIndex: 'status',
-},{
+}, {
   title: '司机电话',
   dataIndex: 'status',
-},{
+}, {
   title: '车牌号',
   dataIndex: 'status',
-},{
-  title: '货物数量',
+},
+//3.收发货信息
+{
+  title: '发货方名称',
   dataIndex: 'status',
-},{
-  title: '货物重量（吨）',
+}, {
+  title: '发货方电话',
   dataIndex: 'status',
-},{
-  title: '货物体积',
+}, {
+  title: '收货方名称',
   dataIndex: 'status',
-},{
+}, {
+  title: '收货方电话',
+  dataIndex: 'status',
+}, {
   title: '发货地',
   dataIndex: 'status',
-},{
+}, {
   title: '收货地',
   dataIndex: 'status',
-},{
+},
+//4.运输信息
+{
+  title: '要求提货时间',
+  dataIndex: 'status',
+}, {
   title: '提货时间',
   dataIndex: 'status',
-},{
+}, {
   title: '签收时间',
   dataIndex: 'status',
-},{
+}, {
+  title: '回单时间',
+  dataIndex: 'status',
+}, {
+  title: '确认回单时间',
+  dataIndex: 'status',
+}, {
   title: '回单',
   dataIndex: 'status',
-},{
+}, {
+  title: '运输合作协议',
+  dataIndex: 'status',
+},
+//5.费用信息
+{
   title: '运费',
   dataIndex: 'status',
-},{
-  title: '油卡金额',
+}, {
+  title: '油卡付',
   dataIndex: 'status',
-},{
+}, {
   title: '预付状态',
   dataIndex: 'status',
-},{
+}, {
   title: '预付金额',
   dataIndex: 'status',
 },{
@@ -212,31 +248,39 @@ const columns = [{
   title: '尾款金额',
   dataIndex: 'status',
 },{
+  title: '回款金额',
+  dataIndex: 'status',
+},{
   title: '服务费',
+  dataIndex: 'status',
+},{
+  title: '保障服务费',
+  dataIndex: 'status',
+},{
+  title: '保障服务',
+  dataIndex: 'status',
+},
+//6.货物信息
+{
+  title: '货值（万元）',
+  dataIndex: 'status',
+},{
+  title: '货物名称',
   dataIndex: 'status',
 },{
   title: '货物类型',
   dataIndex: 'status',
 },{
-  title: '业务类型',
+  title: '货物数量',
   dataIndex: 'status',
 },{
-  title: '运输类型',
+  title: '货物重量（吨）',
   dataIndex: 'status',
 },{
-  title: '货值（万元）',
-  dataIndex: 'status',
-},{
-  title: '保障服务',
-  dataIndex: 'status',
-},{
-  title: '是否回款',
+  title: '货物体积',
   dataIndex: 'status',
 },{
   title: '备注',
-  dataIndex: 'status',
-},{
-  title: '操作',
   dataIndex: 'status',
 }];
 

@@ -2,7 +2,7 @@
  * @Author: error: git config user.name && git config user.email & please set dead value or install git
  * @Date: 2022-09-06 16:31:14
  * @LastEditors: error: git config user.name && git config user.email & please set dead value or install git
- * @LastEditTime: 2022-09-07 17:42:50
+ * @LastEditTime: 2022-09-13 16:00:55
  * @FilePath: \basic\src\views\user-ctr\owner-mgmt\registerOwner.vue
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
 -->
@@ -14,7 +14,7 @@
     </a-steps>
     <a-row class="steps-content" justify="center">
       <template v-if="current === 0">
-        <a-row justify="center" class="owner-type-card-wrapper">
+        <a-row justify="center" class="owner-type-card-wrapper" @click="chooseType">
           <a-card hoverable class="owner-type-card">
             <template #cover>
               <img
@@ -25,7 +25,7 @@
             <a-card-meta title="非货主企业" description="物流公司、中介公司等">
             </a-card-meta>
           </a-card>
-          <a-card hoverable class="owner-type-card">
+          <a-card hoverable class="owner-type-card" @click="chooseType">
             <template #cover>
               <img
                 alt="example"
@@ -35,7 +35,7 @@
             <a-card-meta title="货主企业" description="直接货源，如甲方、经销商等">
             </a-card-meta>
           </a-card>
-          <a-card hoverable class="owner-type-card">
+          <a-card hoverable class="owner-type-card" @click="chooseType">
             <template #cover>
               <img
                 alt="example"
@@ -68,7 +68,7 @@
       </template>
     </a-row>
     <div class="steps-action">
-      <a-button v-if="current < steps.length - 1" type="primary" @click="next">下一步</a-button>
+      <a-button v-if="current < steps.length - 1" type="primary" @click="next" class="next-btn">下一步</a-button>
     </div>
   </section>
 </template>
@@ -90,6 +90,10 @@ const steps = [{
       }]
 const next = () => {
   current.value++;
+}
+
+const chooseType = () => {
+
 }
 </script>
 
@@ -116,5 +120,8 @@ const next = () => {
 .owner-type-card {
   width: 240px;
   margin-right: 48px;
+}
+.next-btn {
+  width: 200px;
 }
 </style>

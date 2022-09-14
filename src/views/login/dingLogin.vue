@@ -2,18 +2,20 @@
  * @Author: error: git config user.name && git config user.email & please set dead value or install git
  * @Date: 2022-09-01 19:00:59
  * @LastEditors: error: git config user.name && git config user.email & please set dead value or install git
- * @LastEditTime: 2022-09-09 16:33:07
+ * @LastEditTime: 2022-09-13 15:15:06
  * @FilePath: \basic\src\views\login\dingLogin.vue
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
 -->
 <script setup>
 import { useStore } from 'vuex'
+import { useRouter } from 'vue-router'
 import { sendSocketMessage } from "@/utils/websocket"
 import { cookie } from '@/api/sys'
-
 import { inject } from 'vue'
+
+const router = useRouter()
+
 const ws = inject('ws')
-console.log(ws)
 ws.onopen = function () {
   console.log('onopen')
 }
@@ -25,7 +27,10 @@ ws.onmessage = async function (msg) {
     openDing()
   } else if (data.method === 'AccessToken.OnAccepted') {
     store.commit('user/setToken', JSON.parse(msg.data).params[0])
-    await cookie()
+    const res = await cookie()
+    if (res === 'success') {
+      router.push('/dashboard')
+    }
   }
 }
 

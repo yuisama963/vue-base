@@ -2,7 +2,7 @@
  * @Author: error: git config user.name && git config user.email & please set dead value or install git
  * @Date: 2022-06-16 18:18:56
  * @LastEditors: error: git config user.name && git config user.email & please set dead value or install git
- * @LastEditTime: 2022-09-09 13:50:20
+ * @LastEditTime: 2022-09-13 20:41:09
  * @FilePath: \basic\src\permission.js
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
  */
@@ -14,7 +14,7 @@ import { session } from '@/api/sys'
 // 白名单
 const whiteList = ['/login', '/dd-login', '/old-login', 
 '/register-owner', '/owner-detail', '/role-mgmt', '/create-role',
-'/waybill-mgmt']
+'/waybill-mgmt', '/car-mgmt', '/address-mgmt']
 /**
  * 路由前置守卫
  */
@@ -28,6 +28,8 @@ router.beforeEach(async (to, from, next) => {
       const res = await session()
       if (res === 'success') {
         next()
+      } else {
+        next('/login')
       }
     }
   }

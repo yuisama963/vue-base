@@ -2,7 +2,7 @@
  * @Author: error: git config user.name && git config user.email & please set dead value or install git
  * @Date: 2022-06-09 18:08:47
  * @LastEditors: error: git config user.name && git config user.email & please set dead value or install git
- * @LastEditTime: 2022-09-09 13:56:16
+ * @LastEditTime: 2022-09-13 19:38:45
  * @FilePath: \basic\src\router\index.js
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
  */
@@ -204,6 +204,44 @@ export const publicRoutes = [
         meta: {
           title: '运单管理',
           id: 'waybillMgmt'
+        }
+      },
+      //资源库
+      {
+        path: 'car-mgmt',
+        component: () => 
+          import('@/views/resource/car-mgmt/index.vue'),
+        name: 'carMgmt',
+        meta: {
+          title: '车辆管理',
+          id: 'carMgmt'
+        }
+      }, {
+        path: 'address-mgmt',
+        component: () => 
+          import('@/views/resource/address-mgmt/index.vue'),
+        name: 'addressMgmt',
+        meta: {
+          title: '地址管理',
+          id: 'addressMgmt'
+        }
+      }, {
+        path: 'customer-mgmt',
+        component: () => 
+          import('@/views/resource/customer-mgmt/index.vue'),
+        name: 'customerMgmt',
+        meta: {
+          title: '客户管理',
+          id: 'customerMgmt'
+        }
+      }, {
+        path: 'project-mgmt',
+        component: () => 
+          import('@/views/resource/project-mgmt/index.vue'),
+        name: 'projectMgmt',
+        meta: {
+          title: '项目管理',
+          id: 'projectMgmt'
         }
       }
     ]

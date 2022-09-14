@@ -2,7 +2,7 @@
  * @Author: error: git config user.name && git config user.email & please set dead value or install git
  * @Date: 2022-08-26 14:55:38
  * @LastEditors: error: git config user.name && git config user.email & please set dead value or install git
- * @LastEditTime: 2022-09-08 20:57:04
+ * @LastEditTime: 2022-09-13 17:22:26
  * @FilePath: \basic\src\views\sys-mgmt\role-mgmt\detail.vue
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
 -->
@@ -11,8 +11,14 @@
     <a-row :gutter="16">
       <a-col :span="6">
         <a-card title="基础信息">
-          <a-input></a-input>
-          <a-input></a-input>
+          <label for="">角色名称</label>
+          <a-input v-model:value="value"></a-input>
+          <label for="">备注</label>
+          <a-textarea
+      v-model:value="value2"
+      placeholder="请输入备注"
+      :auto-size="{ minRows: 2, maxRows: 5 }"
+    />
         </a-card>
       </a-col>
       <a-col :span="9">
