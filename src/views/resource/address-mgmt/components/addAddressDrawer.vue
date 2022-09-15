@@ -2,7 +2,7 @@
  * @Author: error: git config user.name && git config user.email & please set dead value or install git
  * @Date: 2022-08-29 17:42:06
  * @LastEditors: error: git config user.name && git config user.email & please set dead value or install git
- * @LastEditTime: 2022-09-14 17:31:53
+ * @LastEditTime: 2022-09-15 20:50:42
  * @FilePath: \basic\src\views\sys-mgmt\organization\components\setRoleDrawer.vue
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
 -->
@@ -20,17 +20,17 @@
       </a-row>
     </template>
     <a-form layout="vertical" :model="formData">
-      <a-form-item label="地址简称">
-        <a-input v-model:value="formData.carNo" placeholder="请输入地址名称" />
+      <a-form-item label="地址简称" :rules="[{ required: true, message: '请输入地址名称' }]">
+        <a-input v-model:value="formData.name" placeholder="请输入地址名称" />
       </a-form-item>
-      <a-form-item label="所在地">
-        <a-input v-model:value="formData.carNo" placeholder="请选择所在地" />
+      <a-form-item label="所在地" :rules="[{ required: true, message: '请选择所在地' }]">
+        <addressCascader @onChange="onChange"></addressCascader>
       </a-form-item>
-      <a-form-item label="详细地址">
-        <a-input v-model:value="formData.carNo" placeholder="请输入详细地址" />
+      <a-form-item label="详细地址" :rules="[{ required: true, message: '请输入详细地址' }]">
+        <a-input v-model:value="formData.detail" placeholder="请输入详细地址" />
       </a-form-item>
-      <a-form-item label="经纬度坐标">
-        <a-input-search v-model:value="formData.carNo" placeholder="输入详细地址获取坐标" @search="openMapDialog" disabled>
+      <a-form-item label="经纬度坐标" :rules="[{ required: true, message: '请获取经纬度坐标' }]">
+        <a-input-search v-model:value="formData.coordinates" placeholder="输入详细地址获取坐标" @search="openMapDialog" disabled>
         <template #enterButton>
           <a-button>地图拾取</a-button>
         </template>
@@ -51,6 +51,7 @@
 import { ref } from 'vue'
 import useDrawer from '@/hooks/useDrawer'
 import mapDialog from './mapDialog.vue'
+import addressCascader from '@/components/Address/cascader.vue'
 
 const { visible, toggleDrawer } = useDrawer()
 defineExpose({
@@ -58,8 +59,12 @@ defineExpose({
 })
 
 const formData = ref({
-  carNo: null,
-  des: null
+  name: null,
+  location: null,
+  detail: null,
+  coordinates: null,
+  phone: null,
+  contact: null
 })
 
 const emits = defineEmits(['onCloseAllDrawer', 'onAddCar'])
@@ -71,6 +76,10 @@ const onCloseAllDrawer = () => {
 // 
 const onConfirm = () => {
   emits('onAddCar', {data: formData.value})
+}
+
+const onChange = (val) => {
+  formData.value.location = val
 }
 
 const mapDialogRef = ref(null)

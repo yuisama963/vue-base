@@ -2,7 +2,7 @@
  * @Author: error: git config user.name && git config user.email & please set dead value or install git
  * @Date: 2022-08-08 18:43:03
  * @LastEditors: error: git config user.name && git config user.email & please set dead value or install git
- * @LastEditTime: 2022-08-23 16:32:48
+ * @LastEditTime: 2022-09-15 15:03:45
  * @FilePath: \basic\src\store\modules\app.js
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
  */
@@ -11,9 +11,13 @@ import {getItem, setItem} from "@/utils/storage"
 export default {
   namespaced: true,
   state: () => ({
+    loginModalShow: false,
     tagsViewList: getItem(TAGS_VIEW) || [{"fullPath":"/dashboard","meta":{"title":"工作台","id":"dashboard"},"name":"dashboard","params":{},"path":"/dashboard","query":{}}]
   }),
   mutations: {
+    triggerLoginModal(state, flag) {
+      state.loginModalShow = flag
+    },
     /**
      * 添加 tags
      */

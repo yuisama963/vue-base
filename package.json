@@ -13,6 +13,7 @@
     "@antv/g6": "^4.6.16",
     "ant-design-vue": "^3.2.11",
     "axios": "^0.27.2",
+    "china-area-data": "^5.0.1",
     "dayjs": "^1.11.3",
     "dingtalk-jsapi": "^3.0.7",
     "md5": "^2.3.0",
