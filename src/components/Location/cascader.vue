@@ -2,7 +2,7 @@
  * @Author: error: git config user.name && git config user.email & please set dead value or install git
  * @Date: 2022-09-15 19:16:13
  * @LastEditors: error: git config user.name && git config user.email & please set dead value or install git
- * @LastEditTime: 2022-09-15 20:45:49
+ * @LastEditTime: 2022-09-16 19:58:44
  * @FilePath: \basic\src\components\Address\index.vue
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
 -->
@@ -15,12 +15,24 @@
     @change="onChange"
   >
   </a-cascader>
-
 </template>
 <script setup>
 import REGION_DATA from 'china-area-data'
-import { ref, onMounted } from 'vue'
-const value = ref(null)
+import { ref, onMounted, watch, onUpdated } from 'vue'
+
+const props = defineProps({
+  location: {
+    type: Array
+  }
+})
+onMounted(() => {
+  initData()
+})
+onUpdated(() => {
+  value.value = props.location
+})
+
+const value = ref()
 
 const options = ref(null)
 
@@ -64,7 +76,7 @@ const getArea = (city) => {
     Object.keys(area).map(key => {
       arr.push({
         id: key,
-        value: key,
+        value: area[key],
         label: area[key],
       });
     })
@@ -72,9 +84,7 @@ const getArea = (city) => {
   
   return arr;
 }
-onMounted(() => {
-  initData()
-})
+
 
 const emits = defineEmits(['onChange'])
 
